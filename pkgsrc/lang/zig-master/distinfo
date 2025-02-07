@@ -1,0 +1,5 @@
+$NetBSD: distinfo,v 1.16 2024/07/06 16:23:03 adam Exp $
+
+BLAKE2s (zig-0.14.0-dev.3046+08d661fcf.tar.xz) = 2b750b41bffb0c00fbe8c3ec92ac1bc98176c1e360cab69e23a4c1a832da6b57
+SHA512 (zig-0.14.0-dev.3046+08d661fcf.tar.xz) = 7607682982dad0f4d74cfc57667d6c9826f8f792bcb95dc1d11a5ccc677ebaa7c04dda6fd2fb33bfd8049708c611c5c5c290a0d414be26004a262c70302b09c0
+Size (zig-0.14.0-dev.3046+08d661fcf.tar.xz) = 17571064 bytes
