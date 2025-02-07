@@ -8,6 +8,8 @@ Using this repo might break your system or do unexpected things to packages coll
 
 - In case you reached here, first check if llvm 19.x is available in NetBSD repos by running `pkgin se llvm`. If it is available then use it instead, then continue with zig build.
 - Run `pkgin se zig` to see if Zig 0.14 is available in NetBSD repos. If it is available then probably it is not necessary to use this repo at all.
+- [Found out](https://github.com/NetBSD/pkgsrc/issues/155) after creating this repo that there are WIP LLVM packages (<https://pkgsrc.se/wip/llvm>, <https://pkgsrc.se/wip/lld>, <https://pkgsrc.se/wip/clang>). I haven't tried them but I expect them to be better than mine. So you can use them to install LLVM deps before installing zig from this repo.
+- If you want to skip building, you might [find releases](https://github.com/hellium6/zig-master-netbsd/releases) with binary packages.
 - If you know what you're doing, it is up to you.
 
 ## Usage
