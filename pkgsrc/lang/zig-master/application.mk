@@ -27,11 +27,11 @@ ZIGTESTARGS?=
 ZIGPIE?=		yes
 ZIGSTRIP?=		yes
 
-TOOL_DEPENDS+=		zig-[0-9]*:../../lang/zig
+TOOL_DEPENDS+=		zig-master-[0-9]*:../../lang/zig-master
 USE_LANGUAGES=		c
 
-MAKE_ENV+=		ZIG_GLOBAL_CACHE_DIR=${WRKDIR}/zig-global-cache
-MAKE_ENV+=		ZIG_LOCAL_CACHE_DIR=${WRKDIR}/zig-local-cache
+MAKE_ENV+=		ZIG_GLOBAL_CACHE_DIR=${WRKDIR}/zig-master-global-cache
+MAKE_ENV+=		ZIG_LOCAL_CACHE_DIR=${WRKDIR}/zig-master-local-cache
 
 .if ${ZIGPIE:Uyes:M[yY][eE][sS]}
 ZIGBUILDARGS+=		-Dpie=true
@@ -61,15 +61,15 @@ post-extract: zig-vendor-packages
 .PHONY: zig-vendor-packages
 zig-vendor-packages:
 .for pkg in ${ZIG_PACKAGE_DEPENDS}
-	${RUN} ${PREFIX}/bin/zig fetch --global-cache-dir ${WRKDIR}/zig-global-cache ${pkg}
+	${RUN} ${PREFIX}/bin/zig-master fetch --global-cache-dir ${WRKDIR}/zig-master-global-cache ${pkg}
 .endfor
 
 
 do-build:
-	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} zig build ${ZIGBUILDMODE} ${ZIGCPUMODE} ${ZIGBUILDARGS} --prefix ${DESTDIR}${PREFIX}
+	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} zig-master build ${ZIGBUILDMODE} ${ZIGCPUMODE} ${ZIGBUILDARGS} --prefix ${DESTDIR}${PREFIX}/zig-master
 
 do-install:
-	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} zig build install ${ZIGBUILDMODE} ${ZIGCPUMODE} ${ZIGBUILDARGS} --prefix ${DESTDIR}${PREFIX}
+	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} zig-master build install ${ZIGBUILDMODE} ${ZIGCPUMODE} ${ZIGBUILDARGS} --prefix ${DESTDIR}${PREFIX}/zig-master
 
 do-test:
-	cd ${WRKSRC} && ${SETENV} ${TEST_ENV} zig build ${ZIGBUILDMODE} ${ZIGBUILDARGS} ${ZIGCPUMODE} ${ZIGTESTARGS} test
+	cd ${WRKSRC} && ${SETENV} ${TEST_ENV} zig-master build ${ZIGBUILDMODE} ${ZIGBUILDARGS} ${ZIGCPUMODE} ${ZIGTESTARGS} test

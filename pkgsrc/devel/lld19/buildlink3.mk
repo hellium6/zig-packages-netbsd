@@ -5,10 +5,15 @@ BUILDLINK_TREE+=	lld
 .if !defined(LLD_BUILDLINK3_MK)
 LLD_BUILDLINK3_MK:=
 
-BUILDLINK_API_DEPENDS.lld+=	lld>=19.0.0
-BUILDLINK_PKGSRCDIR.lld?=	../../devel/lld
+BUILDLINK_API_DEPENDS.lld+=	lld19>=19.0.0
+BUILDLINK_PKGSRCDIR.lld?=	../../devel/lld19
 
-.include "../../lang/llvm/buildlink3.mk"
+## Consider the /usr/pkg/llvmXX prefix
+BUILDLINK_PASSTHRU_DIRS+=	${BUILDLINK_PREFIX.lld}/${LLVM_ISOLATED_PREFIX_BASENAME}
+BUILDLINK_INCDIRS.lld?=		${LLVM_ISOLATED_PREFIX_BASENAME}/include
+BUILDLINK_LIBDIRS.lld+=		${LLVM_ISOLATED_PREFIX_BASENAME}/lib
+
+.include "../../lang/llvm19/buildlink3.mk"
 .endif	# LLD_BUILDLINK3_MK
 
 BUILDLINK_TREE+=	-lld

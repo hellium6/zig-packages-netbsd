@@ -22,6 +22,10 @@ EXTRACT_SUFX=	.tar.xz
 
 LLVM_MAJOR_VERSION=	${LLVM_VERSION:tu:C/\\.[[:digit:]\.]*//}
 
+# Different prefix to allow lang/llvmXX to live with lang/llvm
+LLVM_ISOLATED_PREFIX_BASENAME=	llvm${LLVM_MAJOR_VERSION}
+LLVM_ISOLATED_PREFIX=			${PREFIX}/${LLVM_ISOLATED_PREFIX_BASENAME}
+
 # As of v15.0.0 llvm requires cmake source code to build
 CMAKE_DIST=	cmake-${LLVM_VERSION}.src
 RUNTIMES_DIST=	runtimes-${LLVM_VERSION}.src
