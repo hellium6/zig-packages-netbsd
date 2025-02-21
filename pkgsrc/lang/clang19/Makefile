@@ -2,8 +2,6 @@
 
 .include "Makefile.common"
 
-PKGNAME=	${DISTNAME:S/.src//}
-
 USE_TOOLS+=	perl:run
 
 # Certain header files are generated, and can only be generated

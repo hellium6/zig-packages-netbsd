@@ -3,7 +3,8 @@
 .include "../../lang/llvm19/version.mk"
 
 DISTNAME=	lld-${LLVM_VERSION}.src
-PKGNAME=	${DISTNAME:S/.src//}
+## So that this devel/lldXX package can live with devel/lld package
+PKGNAME=	lld${LLVM_MAJOR_VERSION}-${LLVM_VERSION}
 CATEGORIES=	devel
 
 MAINTAINER=	pkgsrc-users@NetBSD.org
@@ -23,8 +24,20 @@ PYTHON_FOR_BUILD_ONLY=	yes
 
 INSTALLATION_DIRS+=	libexec/lld
 
+post-configure:
+	## Workaround to make CMake see the paths
+	${FIND} ${WRKSRC} -name CMakeCache\.txt -exec sed -i'_orig' \
+		-e 's,^CMAKE_INSTALL_PREFIX:PATH=/usr/pkg,CMAKE_INSTALL_PREFIX:PATH='${LLVM_ISOLATED_PREFIX}',' \
+		{} \;
+
 post-install:
-	${LN} -sf ${PREFIX}/bin/lld ${DESTDIR}${PREFIX}/libexec/lld/ld
+	## We make binaries available as binnameXX so that it doesn't
+	## conflict with devel/lld files
+	${LN} -sf ${LLVM_ISOLATED_PREFIX_BASENAME}/bin/lld ${DESTDIR}${PREFIX}/libexec/lld/ld${LLVM_MAJOR_VERSION}
+
+	${MKDIR} -p ${DESTDIR}${PREFIX}/bin
+	${FIND} ${DESTDIR}${LLVM_ISOLATED_PREFIX}/bin -mindepth 1 -execdir \
+		${LN} -vsf ${LLVM_ISOLATED_PREFIX}/bin/{} ${DESTDIR}${PREFIX}/bin/{}${LLVM_MAJOR_VERSION} \;
 
 .include "options.mk"
 .include "../../devel/cmake/build.mk"

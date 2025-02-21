@@ -7,6 +7,9 @@
 DISTNAME=	clang-${LLVM_VERSION}.src
 CATEGORIES=	lang devel
 
+# So that this lang/clangXX package can live with lang/clang package
+PKGNAME=	clang${LLVM_MAJOR_VERSION}-${LLVM_VERSION}
+
 MAINTAINER=	pkgsrc-users@NetBSD.org
 HOMEPAGE=	https://clang.llvm.org/
 COMMENT=	C language family frontend for LLVM
@@ -172,8 +175,20 @@ CMAKE_CONFIGURE_ARGS+=		-DLLVM_ENABLE_Z3_SOLVER=ON
 post-extract:
 	${MKDIR} ${WRKSRC}/build
 
+post-configure:
+	# Workaround to make CMake see the paths
+	${FIND} ${WRKSRC} -name CMakeCache\.txt -exec sed -i'_orig' \
+		-e 's,^CMAKE_INSTALL_PREFIX:PATH=/usr/pkg,CMAKE_INSTALL_PREFIX:PATH='${LLVM_ISOLATED_PREFIX}',' \
+		{} \;
+
+post-install:
+	# Make every binary available as /usr/pkg/bin/binary19
+	${MKDIR} -p ${DESTDIR}${PREFIX}/bin
+	${FIND} ${DESTDIR}${LLVM_ISOLATED_PREFIX}/bin -mindepth 1 -execdir \
+		${LN} -vsf ${LLVM_ISOLATED_PREFIX}/bin/{} ${DESTDIR}${PREFIX}/bin/{}${LLVM_MAJOR_VERSION} \;
+
 .include "../../textproc/libxml2/buildlink3.mk"
 .include "../../devel/zlib/buildlink3.mk"
 .include "../../lang/python/application.mk"
 .include "../../lang/python/tool.mk"
-DEPENDS+=	llvm-${PKGVERSION_NOREV}{,nb*}:../../lang/llvm19
+DEPENDS+=	llvm19-${PKGVERSION_NOREV}{,nb*}:../../lang/llvm19

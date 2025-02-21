@@ -26,7 +26,8 @@
 .include "version.mk"
 
 DISTNAME=	llvm-${LLVM_VERSION}.src
-PKGNAME=	${DISTNAME:S/.src//}
+# So that this lang/llvmXX package can live with lang/llvm package
+PKGNAME=	llvm${LLVM_MAJOR_VERSION}-${LLVM_VERSION}
 CATEGORIES=	lang devel
 
 MAINTAINER=	pkgsrc-users@NetBSD.org
@@ -92,6 +93,8 @@ SOEXT=		so
 PLIST.notdylib=	yes
 .endif
 PLIST_SUBST+=	SOEXT=${SOEXT}
+## So that we can use ${LLVM_MAJOR_VERSION} in PLIST
+PLIST_SUBST+=	LLVM_MAJOR_VERSION=${LLVM_MAJOR_VERSION}
 
 NOTDYLIBS=		LTO Remarks
 .for libname in ${NOTDYLIBS}
@@ -130,7 +133,7 @@ CMAKE_CONFIGURE_ARGS+=	-DPKGSRC_LLVM_PTHREADLIB=-lpthread
 
 .if ${USE_CROSS_COMPILE:U:tl} == "yes"
 TOOL_DEPENDS+=	${PKGNAME}:../../${PKGPATH}
-CMAKE_CONFIGURE_ARGS+=	-DLLVM_TABLEGEN:STRING=${TOOLBASE:Q}/bin/llvm-tblgen
+CMAKE_CONFIGURE_ARGS+=	-DLLVM_TABLEGEN:STRING=${TOOLBASE:Q}/${LLVM_ISOLATED_PREFIX_BASENAME:Q}/bin/llvm-tblgen
 .endif
 
 .include "options.mk"
@@ -141,6 +144,25 @@ post-extract:
 .for f in config.guess config.sub
 	${CP} ../../mk/gnu-config/${f} ${WRKSRC}/cmake/${f}
 .endfor
+
+post-configure:
+	## Workaround for making CMake see the isolated prefix
+	${FIND} ${WRKSRC} -name CMakeCache\.txt -exec sed -i'_orig' \
+		-e 's,^CMAKE_INSTALL_PREFIX:PATH=/usr/pkg,CMAKE_INSTALL_PREFIX:PATH='${LLVM_ISOLATED_PREFIX}',' \
+		-e '/^CMAKE_SKIP_RPATH:/ s,^CMAKE_SKIP_RPATH:BOOL=TRUE,CMAKE_SKIP_RPATH:BOOL=FALSE,' \
+		-e '/^CMAKE_CXX_FLAGS:/ s,$$, -I'${LLVM_ISOLATED_PREFIX}'/include,' \
+		-e '/^CMAKE_CXX_LINK_FLAGS:/ s,$$, -L'${LLVM_ISOLATED_PREFIX}'/lib -Wl\,-R'${LLVM_ISOLATED_PREFIX}'/lib,' \
+		-e '/^CMAKE_C_FLAGS:/ s,$$, -I'${LLVM_ISOLATED_PREFIX}'/include,' \
+		-e '/^CMAKE_EXE_LINKER_FLAGS:/ s,$$, -L'${LLVM_ISOLATED_PREFIX}'/lib -Wl\,-R'${LLVM_ISOLATED_PREFIX}'/lib,' \
+		-e '/^CMAKE_MODULE_LINKER_FLAGS:/ s,$$, -L'${LLVM_ISOLATED_PREFIX}'/lib -Wl\,-R'${LLVM_ISOLATED_PREFIX}'/lib,' \
+		-e '/^CMAKE_SHARED_LINKER_FLAGS:/ s,$$, -L'${LLVM_ISOLATED_PREFIX}'/lib -Wl\,-R'${LLVM_ISOLATED_PREFIX}'/lib,' \
+		{} \;
+
+post-install:
+	## Make every binary available as /usr/pkg/bin/binary19
+	${MKDIR} -p ${DESTDIR}${PREFIX}/bin
+	${FIND} ${DESTDIR}${LLVM_ISOLATED_PREFIX}/bin -mindepth 1 -execdir \
+		${LN} -vsf ${LLVM_ISOLATED_PREFIX}/bin/{} ${DESTDIR}${PREFIX}/bin/{}${LLVM_MAJOR_VERSION} \;
 
 .include "../../devel/cmake/build.mk"
 .include "../../archivers/zstd/buildlink3.mk"
