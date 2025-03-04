@@ -1,6 +1,6 @@
 # Zig master for NetBSD
 
-`pkgsrc` packages to run Zig master on NetBSD. Tested on NetBSD 10.0.
+`pkgsrc` packages to run Zig master on NetBSD. Tested on NetBSD 10.1.
 
 > /!\ WARNING: This repo deals with bleeding edge software that might affect the stability of your system.
 > 

@@ -36,7 +36,7 @@ CMAKE_CONFIGURE_ARGS+=	-DZIG_TARGET_MCPU=baseline
 #CMAKE_CONFIGURE_ARGS+=	-DZIG_PIE=ON
 
 ## Make it see files from the path of lang/llvm19
-.include "../../lang/llvm19/version.mk"
+.include "../../lang/llvm19/isolatedversion.mk"
 LDFLAGS+=		-L${LLVM_ISOLATED_PREFIX}/lib -Wl,-R${LLVM_ISOLATED_PREFIX}/lib
 CMAKE_CONFIGURE_ARGS+=	-DCMAKE_CXX_LINK_FLAGS=${LDFLAGS:Q}
 CMAKE_CONFIGURE_ARGS+=	-DCMAKE_C_LINK_FLAGS=${LDFLAGS:Q}
@@ -66,6 +66,23 @@ RELRO_SUPPORTED=	no
 MKPIE_SUPPORTED=	no
 # TODO: /usr/bin/env + /bin/env in lib/std/zig/system.zig
 
+pre-configure:
+	## Make zig build see LD_LIBRARY_PATH (e.g. path to
+	## "libclang-cpp.so.xx.y")
+	${SED} -i'_orig' \
+		-e '1{h;s,.*,set(ENV{LD_LIBRARY_PATH} "'${LLVM_ISOLATED_PREFIX}'/lib:/usr/pkg/lib:/usr/lib:$$\ENV{LD_LIBRARY_PATH}")\n,;G;}' \
+		-e '1{h;s,.*,set(ENV{LIBRARY_PATH} "'${LLVM_ISOLATED_PREFIX}'/lib:/usr/pkg/lib:/usr/lib:$$\ENV{LIBRARY_PATH}")\n,;G;}' \
+		-e '1{h;s,.*,set(ENV{LDFLAGS} "-Wl\,-R'${LLVM_ISOLATED_PREFIX}'/lib -L'${LLVM_ISOLATED_PREFIX}'/lib $$\ENV{LDFLAGS}")\n,;G;}' \
+		${WRKDIR}/${DISTNAME}/CMakeLists.txt
+	## Fix paths when lang/clang is already installed on system
+	${SED} -i'_orig' \
+		-e '1{h;s,.*,set(LLVM_INCLUDE_DIRS "'${LLVM_ISOLATED_PREFIX}'/include:$$\{LLVM_INCLUDE_DIRS}")\n,;G;}' \
+		-e '1{h;s,.*,set(LLVM_LIBDIRS "'${LLVM_ISOLATED_PREFIX}'/lib:$$\{LLVM_LIBDIRS}")\n,;G;}' \
+		-e '1{h;s,.*,set(CMAKE_PREFIX_PATH "'${LLVM_ISOLATED_PREFIX}'")\n,;G;}' \
+		${WRKDIR}/${DISTNAME}/cmake/Findclang.cmake
+	## Make stage3 zig build process (build.zig) see the path
+	${SED} -i'_orig' -e '/$${CMAKE_PREFIX_PATH}/ s,^,list(APPEND ZIG_CMAKE_PREFIX_PATH "${LLVM_ISOLATED_PREFIX}")\n,' ${WRKDIR}/${DISTNAME}/CMakeLists.txt
+
 post-configure:
 	## Workaround for making CMake see the isolated prefix
 	${FIND} ${WRKSRC} -name CMakeCache\.txt -exec sed -i'_orig' \
@@ -76,10 +93,10 @@ post-configure:
 		-e '/^CMAKE_EXE_LINKER_FLAGS:/ s,$$, -L'${LLVM_ISOLATED_PREFIX}'/lib -Wl\,-R'${LLVM_ISOLATED_PREFIX}'/lib,' \
 		-e '/^CMAKE_MODULE_LINKER_FLAGS:/ s,$$, -L'${LLVM_ISOLATED_PREFIX}'/lib -Wl\,-R'${LLVM_ISOLATED_PREFIX}'/lib,' \
 		-e '/^CMAKE_SHARED_LINKER_FLAGS:/ s,$$, -L'${LLVM_ISOLATED_PREFIX}'/lib -Wl\,-R'${LLVM_ISOLATED_PREFIX}'/lib,' \
+		-e '$$s,$$,\nCMAKE_INSTALL_RPATH:PATH='${LLVM_ISOLATED_PREFIX}'/lib,' \
+		-e '$$s,$$,\nCMAKE_INSTALL_RPATH_USE_LINK_PATH:BOOL=ON,' \
 		{} \;
-	## Make zig build see LD_LIBRARY_PATH (e.g. path to
-	## "libclang-cpp.so.xx.y")
-	${SED} -i'_orig' -e '1{h;s,.*,set(ENV{LD_LIBRARY_PATH} "'${LLVM_ISOLATED_PREFIX}'/lib:/usr/pkg/lib:/usr/lib:$\ENV{LD_LIBRARY_PATH}")\n,;G;}' ${WRKDIR}/${DISTNAME}/cmake/install.cmake
+		#-e '/^CMAKE_PREFIX_PATH:/ s,=.*,=${LLVM_ISOLATED_PREFIX},' \
 	## Hardcode the path so that executing the linked
 	## /usr/pkg/bin/zig-master file doesn't say "unable to find zig
 	## installation directory"
