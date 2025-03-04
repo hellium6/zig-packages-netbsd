@@ -147,15 +147,20 @@ post-extract:
 
 post-configure:
 	## Workaround for making CMake see the isolated prefix
+	## sed Notes:
+	## - "s,...,...,": substitute
+	## - "s,$$,...,": append to end of line
+	## - "$$s,$$,\n...,": append to end of file
 	${FIND} ${WRKSRC} -name CMakeCache\.txt -exec sed -i'_orig' \
 		-e 's,^CMAKE_INSTALL_PREFIX:PATH=/usr/pkg,CMAKE_INSTALL_PREFIX:PATH='${LLVM_ISOLATED_PREFIX}',' \
-		-e '/^CMAKE_SKIP_RPATH:/ s,^CMAKE_SKIP_RPATH:BOOL=TRUE,CMAKE_SKIP_RPATH:BOOL=FALSE,' \
 		-e '/^CMAKE_CXX_FLAGS:/ s,$$, -I'${LLVM_ISOLATED_PREFIX}'/include,' \
 		-e '/^CMAKE_CXX_LINK_FLAGS:/ s,$$, -L'${LLVM_ISOLATED_PREFIX}'/lib -Wl\,-R'${LLVM_ISOLATED_PREFIX}'/lib,' \
 		-e '/^CMAKE_C_FLAGS:/ s,$$, -I'${LLVM_ISOLATED_PREFIX}'/include,' \
 		-e '/^CMAKE_EXE_LINKER_FLAGS:/ s,$$, -L'${LLVM_ISOLATED_PREFIX}'/lib -Wl\,-R'${LLVM_ISOLATED_PREFIX}'/lib,' \
 		-e '/^CMAKE_MODULE_LINKER_FLAGS:/ s,$$, -L'${LLVM_ISOLATED_PREFIX}'/lib -Wl\,-R'${LLVM_ISOLATED_PREFIX}'/lib,' \
 		-e '/^CMAKE_SHARED_LINKER_FLAGS:/ s,$$, -L'${LLVM_ISOLATED_PREFIX}'/lib -Wl\,-R'${LLVM_ISOLATED_PREFIX}'/lib,' \
+		-e '$$s,$$,\nCMAKE_INSTALL_RPATH:PATH='${LLVM_ISOLATED_PREFIX}'/lib,' \
+		-e '$$s,$$,\nCMAKE_INSTALL_RPATH_USE_LINK_PATH:BOOL=ON,' \
 		{} \;
 
 post-install:

@@ -8,9 +8,11 @@ bin/llc19
 bin/lli-child-target19
 bin/lli19
 bin/llvm-PerfectShuffle19
+bin/llvm-addr2line19
 bin/llvm-ar19
 bin/llvm-as19
 bin/llvm-bcanalyzer19
+bin/llvm-bitcode-strip19
 bin/llvm-c-test19
 bin/llvm-cat19
 bin/llvm-cfi-verify19
@@ -25,6 +27,7 @@ bin/llvm-debuginfod-find19
 bin/llvm-debuginfod19
 bin/llvm-diff19
 bin/llvm-dis19
+bin/llvm-dlltool19
 bin/llvm-dwarfdump19
 bin/llvm-dwarfutil19
 bin/llvm-dwp19
@@ -32,8 +35,10 @@ bin/llvm-exegesis19
 bin/llvm-extract19
 bin/llvm-gsymutil19
 bin/llvm-ifs19
+bin/llvm-install-name-tool19
 bin/llvm-jitlink-executor19
 bin/llvm-jitlink19
+bin/llvm-lib19
 bin/llvm-libtool-darwin19
 bin/llvm-link19
 bin/llvm-lipo19
@@ -49,10 +54,13 @@ bin/llvm-nm19
 bin/llvm-objcopy19
 bin/llvm-objdump19
 bin/llvm-opt-report19
+bin/llvm-otool19
 bin/llvm-pdbutil19
 bin/llvm-profdata19
 bin/llvm-profgen19
+bin/llvm-ranlib19
 bin/llvm-rc19
+bin/llvm-readelf19
 bin/llvm-readobj19
 bin/llvm-readtapi19
 bin/llvm-reduce19
@@ -63,10 +71,12 @@ bin/llvm-size19
 bin/llvm-split19
 bin/llvm-stress19
 bin/llvm-strings19
+bin/llvm-strip19
 bin/llvm-symbolizer19
 bin/llvm-tblgen19
 bin/llvm-tli-checker19
 bin/llvm-undname19
+bin/llvm-windres19
 bin/llvm-xray19
 bin/not19
 bin/obj2yaml19

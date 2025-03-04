@@ -14,6 +14,7 @@
 # used by lang/wasi-libcxx
 # used by parallel/openmp
 
+## Also change LLVM_VERSION in isolatedversion.mk
 LLVM_VERSION=	19.1.7
 MASTER_SITES=	${MASTER_SITE_GITHUB:=llvm/}
 GITHUB_PROJECT=	llvm-project
@@ -22,7 +23,7 @@ EXTRACT_SUFX=	.tar.xz
 
 LLVM_MAJOR_VERSION=	${LLVM_VERSION:tu:C/\\.[[:digit:]\.]*//}
 
-# Different prefix to allow lang/llvmXX to live with lang/llvm
+## Different prefix to allow lang/llvmXX to live with lang/llvm
 LLVM_ISOLATED_PREFIX_BASENAME=	llvm${LLVM_MAJOR_VERSION}
 LLVM_ISOLATED_PREFIX=			${PREFIX}/${LLVM_ISOLATED_PREFIX_BASENAME}
 
