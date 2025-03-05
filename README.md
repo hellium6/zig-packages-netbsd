@@ -56,7 +56,7 @@ ZIGF=$(curl -s https://ziglang.org/download/ | grep '\-dev' | head -n1 | sed -ne
 ## put the fetched value in previous command as DISTNAME
 sed -i -e "s/^DISTNAME=.*/DISTNAME=	$ZIGF/" Makefile
 ## or enter manually
-#sed -i -e 's/^DISTNAME=.*/DISTNAME=	zig-0.14.0-dev.3222+8a3aebaee/' Makefile
+#sed -i -e 's/^DISTNAME=.*/DISTNAME=	zig-0.14.0-dev.3456+00a8742bb/' Makefile
 ## optionally change MASTER_SITES to use a mirror
 sed -i -e 's/^MASTER_SITES=.*/MASTER_SITES=	https:\/\/zig.linus.dev\/zig\//' Makefile
 make makesum  # update checksums according to new DISTNAME
@@ -97,7 +97,7 @@ InstalledDir: /usr/pkg/llvm19/bin
 $ zig-master version
 0.14.0
 $ pkg_info -a | grep ^zig
-zig-master-0.14.0-dev.3267+59dc15fa0 Programming language designed for robustness and clarity
+zig-master-0.14.0-dev.3462+edabcf619 Programming language designed for robustness and clarity
 ```
 
 Example of working with both Zig and Zig master on the same system:
@@ -133,8 +133,8 @@ Example of uninstalling a package:
 
 ```sh
 $ pkg_info -a | grep ^zig
-zig-master-0.14.0-dev.3267+59dc15fa0 Programming language designed for robustness and clarity
-$ doas pkg_delete zig-master-0.14.0-dev.3267+59dc15fa0
+zig-master-0.14.0-dev.3462+edabcf619 Programming language designed for robustness and clarity
+$ doas pkg_delete zig-master-0.14.0-dev.3462+edabcf619
 ```
 
 License: Anything added by me in this repo (not what is based on another project) is public domain or CC0 1.0 Universal. For things taken from other projects, refer to those projects, such as [pkgsrc](https://github.com/NetBSD/pkgsrc).
