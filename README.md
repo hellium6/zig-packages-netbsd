@@ -73,14 +73,19 @@ make install
 
 If you already have the package installed, you might have to do `make update` or `make replace` instead of `make install` in above commands. [Check here](https://www.netbsd.org/docs/pkgsrc/build.html#build.helpful-targets) for more info on which one to use when.
 
-Alternatively package files can be generated and installed by running this instead of `make install`:
+Alternatively to generate package files but not install it, run this instead of `make install`:
 
 ```sh
 make package  # or make repackage
-doas pkg_add /usr/pkgsrc/packages/All/package-filename-here.tgz
 ```
 
-Creating package files lets you keep a backup of them for future installations without building them again.
+You can keep a backup of the generated package files in `/usr/pkgsrc/packages/` so that you can install them on future clean installs of NetBSD without building them again saving you lots of time. To install from package file:
+
+```sh
+doas pkg_add /usr/pkgsrc/packages/All/package-filename-here.tgz
+## or
+doas pkg_add /path/to/package-filename-here.tgz
+```
 
 Example output after install:
 
