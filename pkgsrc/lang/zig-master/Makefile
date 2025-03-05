@@ -3,10 +3,10 @@
 ## Update DISTNAME according to the latest master download URL and run
 ## "make makesum" after that.
 ## Example: If the URL is:
-## https://ziglang.org/builds/zig-0.14.0-dev.3267+59dc15fa0.tar.xz
-## then this value would be: zig-0.14.0-dev.3267+59dc15fa0
+## https://ziglang.org/builds/zig-0.14.0-dev.3462+edabcf619.tar.xz
+## then this value would be: zig-0.14.0-dev.3462+edabcf619
 ## Meaning, filename minus the .tar.xz extension
-DISTNAME=	zig-0.14.0-dev.3267+59dc15fa0
+DISTNAME=	zig-0.14.0-dev.3462+edabcf619
 ## To make this a separate package than lang/zig
 PKGNAME=	${DISTNAME:S/zig-/zig-master-/}
 CATEGORIES=	lang
