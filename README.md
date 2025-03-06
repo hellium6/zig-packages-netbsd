@@ -49,6 +49,9 @@ cd /usr/pkgsrc/lang/clang19
 make install
 
 cd /usr/pkgsrc/lang/zig-master
+### For 0.14.0 stable:
+### cd /usr/pkgsrc/lang/zig-0.14.0
+
 ## update DISTNAME in Makefile according to download URL
 ## read comment in the file for details
 ## to get latest master or dev download:
@@ -115,6 +118,8 @@ $ zig version
 0.13.0
 $ zig-master version
 0.14.0
+### For lang/zig-0.14.0 you'd have to run zig-0.14.0
+
 ### typing zig-master every time is boring, so...
 $ alias zig=zig-master
 ### above can be added in ~/.bashrc to do this automatically on startup
@@ -139,6 +144,8 @@ Example of uninstalling a package:
 ```sh
 $ pkg_info -a | grep ^zig
 zig-master-0.14.0-dev.3462+edabcf619 Programming language designed for robustness and clarity
+### For lang/zig-0.14.0 the output might be something like:
+### zig-isolated-0.14.0 Programming language designed for robustness and clarity
 $ doas pkg_delete zig-master-0.14.0-dev.3462+edabcf619
 ```
 
