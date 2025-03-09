@@ -118,7 +118,8 @@ $ zig version
 0.13.0
 $ zig-master version
 0.14.0
-### For lang/zig-0.14.0 you'd have to run zig-0.14.0
+### For lang/zig-0.14.0 you'd have to run zig-0.14.0 or
+### if you've changed DISTNAME, type "zig" and press tab twice for hint.
 
 ### typing zig-master every time is boring, so...
 $ alias zig=zig-master
@@ -145,7 +146,7 @@ Example of uninstalling a package:
 $ pkg_info -a | grep ^zig
 zig-master-0.14.0-dev.3462+edabcf619 Programming language designed for robustness and clarity
 ### For lang/zig-0.14.0 the output might be something like:
-### zig-isolated-0.14.0 Programming language designed for robustness and clarity
+### zig-isolated0140-0.14.0 Programming language designed for robustness and clarity (prefix isolated)
 $ doas pkg_delete zig-master-0.14.0-dev.3462+edabcf619
 ```
 

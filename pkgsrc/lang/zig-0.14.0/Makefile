@@ -1,29 +1,44 @@
 # $NetBSD: Makefile,v 1.42 2024/08/10 10:19:01 nia Exp $
 
-## Update DISTNAME according to the latest master download URL and run
-## "make makesum" after that.
+## If you want to use another commit, update DISTNAME according to the
+## 0.14.0 download URL and run "make makesum" after that.
 ## Example: If the URL is:
 ## https://ziglang.org/builds/zig-0.14.0-dev.3462+edabcf619.tar.xz
 ## then this value would be: zig-0.14.0-dev.3462+edabcf619
-## Meaning, filename minus the .tar.xz extension
+## Meaning, filename minus the .tar.xz extension.
 DISTNAME=	zig-0.14.0
-## To make this a separate package than lang/zig
-PKGNAME=	${DISTNAME:S/zig-/zig-isolated-/}
+## Want to make this (a) a separate package than lang/zig and (b) we
+## want to be able to install different commits of the same version.
+## For example 0.14.0 (stable) and 0.14.0-dev.3462+edabcf619 (unstable).
+## Having the package name as "zig" won't let us install another version
+## with the same name. We need a unique package name based on version in
+## the DISTNAME so that it allows both to be installed.
+##
+## We prepare a version suffix code to make the name unique.
+## Example values:
+## - "zig-0.14.0-dev.3462+edabcf619" becomes "0140dev3462+edabcf619"
+## - "zig-0.14.0" becomes "0140"
+APPEND_VER=	${DISTNAME:S/zig-//:S/.//g:S/-//}
+## Finally appending the version code creates our unique package name.
+## e.g. "zig-isolated0140" or "zig-isolated0140dev3462+edabcf619". Both
+## should be able to be installed at the same time.
+PKGNAME=	${DISTNAME:S/zig-/zig-isolated${APPEND_VER}-/}
+#PKGREVISION=	1
 CATEGORIES=	lang
 ## https://ziglang.org/builds/ is the official
 MASTER_SITES=	https://ziglang.org/builds/
 ## Alternate mirror
 #MASTER_SITES=	https://zig.linus.dev/zig/
 EXTRACT_SUFX=	.tar.xz
-## Used mainly for /usr/pkg/xx directory and binary shortcut name.
-## e.g. If this is "zig-0.14.0" zig will be installed in
-## /usr/pkg/zig-0.14.0, zig is available as /usr/pkg/bin/zig-0.14.0 and
-## can be used by running "zig-0.14.0".
+## Used mainly for /usr/pkg/xx directory and binary symlink name.
+## e.g. If this is "zig-0.14.0" (a) zig will be installed in
+## /usr/pkg/zig-0.14.0, (b) symlinked as /usr/pkg/bin/zig-0.14.0 and
+## (c) can be used by running "zig-0.14.0".
 PACKAGE_SLUG=	zig-${PKGVERSION_NOREV}
 
 MAINTAINER=	pkgsrc-users@NetBSD.org
 HOMEPAGE=	https://ziglang.org/
-COMMENT=	Programming language designed for robustness and clarity
+COMMENT=	Programming language designed for robustness and clarity (prefix isolated)
 LICENSE=	mit
 
 # Fails to build in chroot on netbsd: https://github.com/ziglang/zig/issues/19756
@@ -101,7 +116,6 @@ post-configure:
 		-e '$$s,$$,\nCMAKE_INSTALL_RPATH:PATH='${LLVM_ISOLATED_PREFIX}'/lib,' \
 		-e '$$s,$$,\nCMAKE_INSTALL_RPATH_USE_LINK_PATH:BOOL=ON,' \
 		{} \;
-		#-e '/^CMAKE_PREFIX_PATH:/ s,=.*,=${LLVM_ISOLATED_PREFIX},' \
 	## Hardcode the path so that executing the linked
 	## /usr/pkg/bin/${PACKAGE_SLUG} file doesn't say "unable to find zig
 	## installation directory"
