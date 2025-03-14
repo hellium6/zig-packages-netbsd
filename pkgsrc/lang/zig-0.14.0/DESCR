@@ -8,3 +8,7 @@ optimality, and clarity.
 * Clear - precisely communicate your intent
   to the compiler and other programmers. The language imposes a
   low overhead to reading code.
+
+(This modified package installs in a different prefix than usual:
+${PREFIX}/zig-${PKGVERSION_NOREV} which might be something like:
+/usr/pkg/zig-0.14.0)

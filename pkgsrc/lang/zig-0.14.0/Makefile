@@ -23,7 +23,7 @@ APPEND_VER=	${DISTNAME:S/zig-//:S/.//g:S/-//}
 ## e.g. "zig-isolated0140" or "zig-isolated0140dev3462+edabcf619". Both
 ## should be able to be installed at the same time.
 PKGNAME=	${DISTNAME:S/zig-/zig-isolated${APPEND_VER}-/}
-#PKGREVISION=	1
+PKGREVISION=	1
 CATEGORIES=	lang
 ## https://ziglang.org/builds/ is the official
 MASTER_SITES=	https://ziglang.org/builds/
