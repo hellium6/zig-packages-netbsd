@@ -23,7 +23,7 @@ APPEND_VER=	${DISTNAME:S/zig-//:S/.//g:S/-//}
 ## e.g. "zig-isolated0140" or "zig-isolated0140dev3462+edabcf619". Both
 ## should be able to be installed at the same time.
 PKGNAME=	${DISTNAME:S/zig-/zig-isolated${APPEND_VER}-/}
-PKGREVISION=	1
+PKGREVISION=	2
 CATEGORIES=	lang
 ## https://ziglang.org/builds/ is the official
 MASTER_SITES=	https://ziglang.org/builds/
@@ -33,8 +33,9 @@ EXTRACT_SUFX=	.tar.xz
 ## Used mainly for /usr/pkg/xx directory and binary symlink name.
 ## e.g. If this is "zig-0.14.0" (a) zig will be installed in
 ## /usr/pkg/zig-0.14.0, (b) symlinked as /usr/pkg/bin/zig-0.14.0 and
-## (c) can be used by running "zig-0.14.0".
-PACKAGE_SLUG=	zig-${PKGVERSION_NOREV}
+## (c) can be used by running "zig-0.14.0". Replaces "+" with "_" for
+## broken symbolic link fix for dev versions.
+PACKAGE_SLUG=	${DISTNAME:S/+/_/}
 
 MAINTAINER=	pkgsrc-users@NetBSD.org
 HOMEPAGE=	https://ziglang.org/
