@@ -6,6 +6,8 @@
 ## https://ziglang.org/builds/zig-0.14.0-dev.3462+edabcf619.tar.xz
 ## then this value would be: zig-0.14.0-dev.3462+edabcf619
 ## Meaning, filename minus the .tar.xz extension.
+## If any pkgsrc package you need depends on application.mk, e.g. zls,
+## changes might be needed on application.mk file as well.
 DISTNAME=	zig-0.14.0
 ## Want to make this (a) a separate package than lang/zig and (b) we
 ## want to be able to install different commits of the same version.
@@ -23,7 +25,7 @@ APPEND_VER=	${DISTNAME:S/zig-//:S/.//g:S/-//}
 ## e.g. "zig-isolated0140" or "zig-isolated0140dev3462+edabcf619". Both
 ## should be able to be installed at the same time.
 PKGNAME=	${DISTNAME:S/zig-/zig-isolated${APPEND_VER}-/}
-PKGREVISION=	2
+PKGREVISION=	3
 CATEGORIES=	lang
 ## https://ziglang.org/builds/ is the official
 MASTER_SITES=	https://ziglang.org/builds/
