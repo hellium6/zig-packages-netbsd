@@ -18,14 +18,14 @@ DISTNAME=	zig-0.14.0
 ##
 ## We prepare a version suffix code to make the name unique.
 ## Example values:
-## - "zig-0.14.0-dev.3462+edabcf619" becomes "0140dev3462+edabcf619"
+## - "zig-0.14.0-dev.3462+edabcf619" becomes "0140dev3462"
 ## - "zig-0.14.0" becomes "0140"
-APPEND_VER=	${DISTNAME:S/zig-//:S/.//g:S/-//}
+APPEND_VER=	${DISTNAME:S/zig-//:S/.//g:S/-//:C/\+.*$//}
 ## Finally appending the version code creates our unique package name.
 ## e.g. "zig-isolated0140" or "zig-isolated0140dev3462+edabcf619". Both
 ## should be able to be installed at the same time.
 PKGNAME=	${DISTNAME:S/zig-/zig-isolated${APPEND_VER}-/}
-PKGREVISION=	3
+PKGREVISION=	4
 CATEGORIES=	lang
 ## https://ziglang.org/builds/ is the official
 MASTER_SITES=	https://ziglang.org/builds/
@@ -35,9 +35,10 @@ EXTRACT_SUFX=	.tar.xz
 ## Used mainly for /usr/pkg/xx directory and binary symlink name.
 ## e.g. If this is "zig-0.14.0" (a) zig will be installed in
 ## /usr/pkg/zig-0.14.0, (b) symlinked as /usr/pkg/bin/zig-0.14.0 and
-## (c) can be used by running "zig-0.14.0". Replaces "+" with "_" for
-## broken symbolic link fix for dev versions.
-PACKAGE_SLUG=	${DISTNAME:S/+/_/}
+## (c) can be used by running "zig-0.14.0". "+" causes Zig binary to not
+## be available on double tab press. We remove "+" as fix and following
+## chars to make it shorter.
+PACKAGE_SLUG=	${DISTNAME:C/\+.*$//}
 
 MAINTAINER=	pkgsrc-users@NetBSD.org
 HOMEPAGE=	https://ziglang.org/
@@ -90,12 +91,16 @@ MKPIE_SUPPORTED=	no
 # TODO: /usr/bin/env + /bin/env in lib/std/zig/system.zig
 
 pre-configure:
-	## Make zig build see LD_LIBRARY_PATH (e.g. path to
+	## - Make zig build see LD_LIBRARY_PATH (e.g. path to
 	## "libclang-cpp.so.xx.y")
+	## - Set version string (esp. for dev builds)
+	## - Make stage3 zig build process (build.zig) see the path
 	${SED} -i'_orig' \
 		-e '1{h;s,.*,set(ENV{LD_LIBRARY_PATH} "'${LLVM_ISOLATED_PREFIX}'/lib:/usr/pkg/lib:/usr/lib:$$\ENV{LD_LIBRARY_PATH}")\n,;G;}' \
 		-e '1{h;s,.*,set(ENV{LIBRARY_PATH} "'${LLVM_ISOLATED_PREFIX}'/lib:/usr/pkg/lib:/usr/lib:$$\ENV{LIBRARY_PATH}")\n,;G;}' \
 		-e '1{h;s,.*,set(ENV{LDFLAGS} "-Wl\,-R'${LLVM_ISOLATED_PREFIX}'/lib -L'${LLVM_ISOLATED_PREFIX}'/lib $$\ENV{LDFLAGS}")\n,;G;}' \
+		-e '/set(ZIG_VERSION/ s,set(ZIG_VERSION "",set(ZIG_VERSION "${DISTNAME:S/zig-//}",' \
+		-e '/$${CMAKE_PREFIX_PATH}/ s,^,list(APPEND ZIG_CMAKE_PREFIX_PATH "${LLVM_ISOLATED_PREFIX}")\n,' \
 		${WRKDIR}/${DISTNAME}/CMakeLists.txt
 	## Fix paths when lang/clang is already installed on system
 	${SED} -i'_orig' \
@@ -103,8 +108,6 @@ pre-configure:
 		-e '1{h;s,.*,set(LLVM_LIBDIRS "'${LLVM_ISOLATED_PREFIX}'/lib:$$\{LLVM_LIBDIRS}")\n,;G;}' \
 		-e '1{h;s,.*,set(CMAKE_PREFIX_PATH "'${LLVM_ISOLATED_PREFIX}'")\n,;G;}' \
 		${WRKDIR}/${DISTNAME}/cmake/Findclang.cmake
-	## Make stage3 zig build process (build.zig) see the path
-	${SED} -i'_orig' -e '/$${CMAKE_PREFIX_PATH}/ s,^,list(APPEND ZIG_CMAKE_PREFIX_PATH "${LLVM_ISOLATED_PREFIX}")\n,' ${WRKDIR}/${DISTNAME}/CMakeLists.txt
 
 post-configure:
 	## Workaround for making CMake see the isolated prefix

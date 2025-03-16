@@ -120,6 +120,9 @@ $ zig-master version
 0.14.0
 ### For lang/zig-0.14.0 you'd have to run zig-0.14.0 or
 ### if you've changed DISTNAME, type "zig" and press tab twice for hint.
+### Example:
+### $ zig-0.14.0-dev.3462 version
+### 0.14.0-dev.3462+edabcf619
 
 ### typing zig-master every time is boring, so...
 $ alias zig=zig-master
