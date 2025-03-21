@@ -13925,6 +13925,7 @@ zig-master/lib/zig/std/c/freebsd.zig
 zig-master/lib/zig/std/c/haiku.zig
 zig-master/lib/zig/std/c/netbsd.zig
 zig-master/lib/zig/std/c/openbsd.zig
+zig-master/lib/zig/std/c/serenity.zig
 zig-master/lib/zig/std/c/solaris.zig
 zig-master/lib/zig/std/coff.zig
 zig-master/lib/zig/std/compress.zig

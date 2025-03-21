@@ -3,10 +3,10 @@
 ## Update DISTNAME according to the latest master download URL and run
 ## "make makesum" after that.
 ## Example: If the URL is:
-## https://ziglang.org/builds/zig-0.14.0-dev.3462+edabcf619.tar.xz
-## then this value would be: zig-0.14.0-dev.3462+edabcf619
+## https://ziglang.org/builds/zig-0.15.0-dev.77+aa8aa6625.tar.xz
+## then this value would be: zig-0.15.0-dev.77+aa8aa6625
 ## Meaning, filename minus the .tar.xz extension
-DISTNAME=	zig-0.14.0-dev.3462+edabcf619
+DISTNAME=	zig-0.15.0-dev.77+aa8aa6625
 ## To make this a separate package than lang/zig
 PKGNAME=	${DISTNAME:S/zig-/zig-master-/}
 CATEGORIES=	lang
@@ -67,12 +67,16 @@ MKPIE_SUPPORTED=	no
 # TODO: /usr/bin/env + /bin/env in lib/std/zig/system.zig
 
 pre-configure:
-	## Make zig build see LD_LIBRARY_PATH (e.g. path to
+	## - Make zig build see LD_LIBRARY_PATH (e.g. path to
 	## "libclang-cpp.so.xx.y")
+	## - Set version string (esp. for dev builds)
+	## - Make stage3 zig build process (build.zig) see the path
 	${SED} -i'_orig' \
 		-e '1{h;s,.*,set(ENV{LD_LIBRARY_PATH} "'${LLVM_ISOLATED_PREFIX}'/lib:/usr/pkg/lib:/usr/lib:$$\ENV{LD_LIBRARY_PATH}")\n,;G;}' \
 		-e '1{h;s,.*,set(ENV{LIBRARY_PATH} "'${LLVM_ISOLATED_PREFIX}'/lib:/usr/pkg/lib:/usr/lib:$$\ENV{LIBRARY_PATH}")\n,;G;}' \
 		-e '1{h;s,.*,set(ENV{LDFLAGS} "-Wl\,-R'${LLVM_ISOLATED_PREFIX}'/lib -L'${LLVM_ISOLATED_PREFIX}'/lib $$\ENV{LDFLAGS}")\n,;G;}' \
+		-e '/set(ZIG_VERSION/ s,set(ZIG_VERSION "",set(ZIG_VERSION "${DISTNAME:S/zig-//}",' \
+		-e '/$${CMAKE_PREFIX_PATH}/ s,^,list(APPEND ZIG_CMAKE_PREFIX_PATH "${LLVM_ISOLATED_PREFIX}")\n,' \
 		${WRKDIR}/${DISTNAME}/CMakeLists.txt
 	## Fix paths when lang/clang is already installed on system
 	${SED} -i'_orig' \
@@ -80,8 +84,6 @@ pre-configure:
 		-e '1{h;s,.*,set(LLVM_LIBDIRS "'${LLVM_ISOLATED_PREFIX}'/lib:$$\{LLVM_LIBDIRS}")\n,;G;}' \
 		-e '1{h;s,.*,set(CMAKE_PREFIX_PATH "'${LLVM_ISOLATED_PREFIX}'")\n,;G;}' \
 		${WRKDIR}/${DISTNAME}/cmake/Findclang.cmake
-	## Make stage3 zig build process (build.zig) see the path
-	${SED} -i'_orig' -e '/$${CMAKE_PREFIX_PATH}/ s,^,list(APPEND ZIG_CMAKE_PREFIX_PATH "${LLVM_ISOLATED_PREFIX}")\n,' ${WRKDIR}/${DISTNAME}/CMakeLists.txt
 
 post-configure:
 	## Workaround for making CMake see the isolated prefix

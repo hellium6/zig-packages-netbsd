@@ -24,7 +24,7 @@ Packages here are named differently and installed in different directories. e.g.
 
 In case you reached here check the following:
 
-- Run `pkgin se zig` to see if the Zig version you want (e.g. 0.14.0) is available in NetBSD official repos. If it is available then probably it is not necessary to use this repo at all.
+- Run `pkgin se zig` to see if the Zig version you want (e.g. 0.15.0) is available in NetBSD official repos. If it is available then probably it is not necessary to use this repo at all.
 - If you want to skip building, you might [find releases](https://github.com/hellium6/zig-master-netbsd/releases) with binary packages which you can install in this order - llvm, lld, clang, zig-master - with something like: `doas pkg_add /path/to/some-package.tgz`
 - If you want to build from source, follow the instructions below.
 - Building from source might require some hours or days (depending on your hardware) to finish as some packages have big codebases. Megabytes of sources producing gigabytes of outputs.
@@ -59,7 +59,7 @@ ZIGF=$(curl -s https://ziglang.org/download/ | grep '\-dev' | head -n1 | sed -ne
 ## put the fetched value in previous command as DISTNAME
 sed -i -e "s/^DISTNAME=.*/DISTNAME=	$ZIGF/" Makefile
 ## or enter manually
-#sed -i -e 's/^DISTNAME=.*/DISTNAME=	zig-0.14.0-dev.3456+00a8742bb/' Makefile
+#sed -i -e 's/^DISTNAME=.*/DISTNAME=	zig-0.15.0-dev.56+d0911786c/' Makefile
 ## optionally change MASTER_SITES to use a mirror
 sed -i -e 's/^MASTER_SITES=.*/MASTER_SITES=	https:\/\/zig.linus.dev\/zig\//' Makefile
 make makesum  # update checksums according to new DISTNAME
@@ -103,9 +103,9 @@ Target: x86_64-unknown-netbsd10.0
 Thread model: posix
 InstalledDir: /usr/pkg/llvm19/bin
 $ zig-master version
-0.14.0
+0.15.0-dev.77+aa8aa6625
 $ pkg_info -a | grep ^zig
-zig-master-0.14.0-dev.3462+edabcf619 Programming language designed for robustness and clarity
+zig-master-0.15.0-dev.77+aa8aa6625 Programming language designed for robustness and clarity
 ```
 
 Example of working with both Zig and Zig master on the same system:
@@ -117,7 +117,7 @@ $ doas pkgin in zig
 $ zig version
 0.13.0
 $ zig-master version
-0.14.0
+0.15.0-dev.77+aa8aa6625
 ### For lang/zig-0.14.0 you'd have to run zig-0.14.0 or
 ### if you've changed DISTNAME, type "zig" and press tab twice for hint.
 ### Example:
@@ -128,7 +128,7 @@ $ zig-master version
 $ alias zig=zig-master
 ### above can be added in ~/.bashrc to do this automatically on startup
 $ zig version
-0.14.0
+0.15.0-dev.77+aa8aa6625
 $ cd `mktemp -d`
 $ zig init
 info: created build.zig
@@ -147,10 +147,10 @@ Example of uninstalling a package:
 
 ```sh
 $ pkg_info -a | grep ^zig
-zig-master-0.14.0-dev.3462+edabcf619 Programming language designed for robustness and clarity
+zig-master-0.15.0-dev.77+aa8aa6625 Programming language designed for robustness and clarity
 ### For lang/zig-0.14.0 the output might be something like:
 ### zig-isolated0140-0.14.0 Programming language designed for robustness and clarity (prefix isolated)
-$ doas pkg_delete zig-master-0.14.0-dev.3462+edabcf619
+$ doas pkg_delete zig-master-0.15.0-dev.77+aa8aa6625
 ```
 
 License: Anything added by me in this repo (not what is based on another project) is public domain or CC0 1.0 Universal. For things taken from other projects, refer to those projects, such as [pkgsrc](https://github.com/NetBSD/pkgsrc).
