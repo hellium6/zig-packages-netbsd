@@ -1,0 +1,5 @@
+$NetBSD: distinfo,v 1.1 2024/04/29 13:27:52 nikita Exp $
+
+BLAKE2s (zls-0.14.0.tar.gz) = 44a15f6654263ddf3d8d1819104339eee91b731c6e45c1ef2eddfdda6563df90
+SHA512 (zls-0.14.0.tar.gz) = 2f48c3fbb4956799f367adfd598694cf3a92e8c52cdbba699656d9e54897e2f3980e54a17d2f7391cf39f2bf3c8c1bf0042d403d4cea099a6adf57a949617ffc
+Size (zls-0.14.0.tar.gz) = 395229 bytes
