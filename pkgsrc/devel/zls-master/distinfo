@@ -1,0 +1,5 @@
+$NetBSD: distinfo,v 1.1 2024/04/29 13:27:52 nikita Exp $
+
+BLAKE2s (master.zip) = 22d5b9c0a1247d74c7706db265937125a47417c030d996990ff830fe0b9665c6
+SHA512 (master.zip) = aefc4b2d9a12020fe2226f3791bfef432d75566321ea5c6d0ac8e6682e925387e0b0b3eea26fa4e870aed9d4ea9bce62229c30cc297fbf718a01fd662941239a
+Size (master.zip) = 437904 bytes
