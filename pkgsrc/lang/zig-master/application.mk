@@ -30,6 +30,10 @@ ZIGSTRIP?=		yes
 TOOL_DEPENDS+=		zig-master-[0-9]*:../../lang/zig-master
 USE_LANGUAGES=		c
 
+## CHANGE THESE if you changed DISTNAME in lang/zig-0.14.0/Makefile.
+ZIG_BINARY=	${PREFIX}/bin/zig-master
+ZIG_PREFIX=	${PREFIX}/zig-master
+
 MAKE_ENV+=		ZIG_GLOBAL_CACHE_DIR=${WRKDIR}/zig-master-global-cache
 MAKE_ENV+=		ZIG_LOCAL_CACHE_DIR=${WRKDIR}/zig-master-local-cache
 
@@ -66,10 +70,10 @@ zig-vendor-packages:
 
 
 do-build:
-	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} zig-master build ${ZIGBUILDMODE} ${ZIGCPUMODE} ${ZIGBUILDARGS} --prefix ${DESTDIR}${PREFIX}/zig-master
+	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${ZIG_BINARY} build ${ZIGBUILDMODE} ${ZIGCPUMODE} ${ZIGBUILDARGS} --prefix ${DESTDIR}${ZIG_PREFIX}
 
 do-install:
-	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} zig-master build install ${ZIGBUILDMODE} ${ZIGCPUMODE} ${ZIGBUILDARGS} --prefix ${DESTDIR}${PREFIX}/zig-master
+	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${ZIG_BINARY} build install ${ZIGBUILDMODE} ${ZIGCPUMODE} ${ZIGBUILDARGS} --prefix ${DESTDIR}${ZIG_PREFIX}
 
 do-test:
-	cd ${WRKSRC} && ${SETENV} ${TEST_ENV} zig-master build ${ZIGBUILDMODE} ${ZIGBUILDARGS} ${ZIGCPUMODE} ${ZIGTESTARGS} test
+	cd ${WRKSRC} && ${SETENV} ${TEST_ENV} ${ZIG_BINARY} build ${ZIGBUILDMODE} ${ZIGBUILDARGS} ${ZIGCPUMODE} ${ZIGTESTARGS} test
