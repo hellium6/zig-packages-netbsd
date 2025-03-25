@@ -243,7 +243,7 @@ Server Path: '/usr/pkg/bin/zls-master'
 - To try autocomplete suggestions, press `o` (lowercase letter O) to create new line, then try typing `std.d` and it should show options `debug` and `dwarf`. Press `<down><enter>` to select `debug`.
 - To save and exit `:wq<enter>`
 
-I was interested in [geany-lsp](https://github.com/techee/geany-lsp) as an example but [it requires Geany 2.1+](https://github.com/techee/geany-lsp/issues/60#issuecomment-2539763729) which was not available in NetBSD repos when writing this.
+If you want to use this on Geany instead, [there is a way](https://github.com/hellium6/zig-master-netbsd/issues/15).
 
 For other text editors, please refer to [this LSP clients list](https://langserver.org/#implementations-client).
 
