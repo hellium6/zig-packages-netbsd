@@ -28,8 +28,6 @@ USE_TOOLS+=		bash:run
 
 CMAKE_CONFIGURE_ARGS+=	-DCMAKE_BUILD_TYPE=Release
 CMAKE_CONFIGURE_ARGS+=	-DZIG_SHARED_LLVM=ON
-## Seperate prefix (may not work, needs post-configure target below)
-CMAKE_CONFIGURE_ARGS+=	-DCMAKE_INSTALL_PREFIX=${DESTDIR}${PREFIX}/zig-master
 # avoid full-cu-features available to build host,
 # in other words ensure that we run everywhere
 CMAKE_CONFIGURE_ARGS+=	-DZIG_TARGET_MCPU=baseline
@@ -71,12 +69,23 @@ pre-configure:
 	## "libclang-cpp.so.xx.y")
 	## - Set version string (esp. for dev builds)
 	## - Make stage3 zig build process (build.zig) see the path
+	## - Append or set CMake values (previously CMakeCache.txt
+	##   "workaround"; starting from "CMAKE_INSTALL_PREFIX" line)
 	${SED} -i'_orig' \
 		-e '1{h;s,.*,set(ENV{LD_LIBRARY_PATH} "'${LLVM_ISOLATED_PREFIX}'/lib:/usr/pkg/lib:/usr/lib:$$\ENV{LD_LIBRARY_PATH}")\n,;G;}' \
 		-e '1{h;s,.*,set(ENV{LIBRARY_PATH} "'${LLVM_ISOLATED_PREFIX}'/lib:/usr/pkg/lib:/usr/lib:$$\ENV{LIBRARY_PATH}")\n,;G;}' \
 		-e '1{h;s,.*,set(ENV{LDFLAGS} "-Wl\,-R'${LLVM_ISOLATED_PREFIX}'/lib -L'${LLVM_ISOLATED_PREFIX}'/lib $$\ENV{LDFLAGS}")\n,;G;}' \
 		-e '/set(ZIG_VERSION/ s,set(ZIG_VERSION "",set(ZIG_VERSION "${DISTNAME:S/zig-//}",' \
 		-e '/$${CMAKE_PREFIX_PATH}/ s,^,list(APPEND ZIG_CMAKE_PREFIX_PATH "${LLVM_ISOLATED_PREFIX}")\n,' \
+		-e '1{h;s,.*,set(CMAKE_INSTALL_PREFIX "${PREFIX}/zig-master" CACHE PATH "Directory to install zig to" FORCE)\n,;G;}' \
+		-e '$$s,$$,\nstring(APPEND CMAKE_CXX_FLAGS " -I${LLVM_ISOLATED_PREFIX}/include"),' \
+		-e '$$s,$$,\nstring(APPEND CMAKE_CXX_LINK_FLAGS " -L${LLVM_ISOLATED_PREFIX}/lib -Wl\,-R${LLVM_ISOLATED_PREFIX}/lib"),' \
+		-e '$$s,$$,\nstring(APPEND CMAKE_C_FLAGS " -I${LLVM_ISOLATED_PREFIX}/include"),' \
+		-e '$$s,$$,\nstring(APPEND CMAKE_EXE_LINKER_FLAGS " -L${LLVM_ISOLATED_PREFIX}/lib -Wl\,-R${LLVM_ISOLATED_PREFIX}/lib"),' \
+		-e '$$s,$$,\nstring(APPEND CMAKE_MODULE_LINKER_FLAGS " -L${LLVM_ISOLATED_PREFIX}/lib -Wl\,-R${LLVM_ISOLATED_PREFIX}/lib"),' \
+		-e '$$s,$$,\nstring(APPEND CMAKE_SHARED_LINKER_FLAGS " -L${LLVM_ISOLATED_PREFIX}/lib -Wl\,-R${LLVM_ISOLATED_PREFIX}/lib"),' \
+		-e '1{h;s,.*,set(CMAKE_INSTALL_RPATH "${LLVM_ISOLATED_PREFIX}/lib" CACHE PATH "" FORCE)\n,;G;}' \
+		-e '1{h;s,.*,set(CMAKE_INSTALL_RPATH_USE_LINK_PATH ON CACHE BOOL "" FORCE)\n,;G;}' \
 		${WRKDIR}/${DISTNAME}/CMakeLists.txt
 	## Fix paths when lang/clang is already installed on system
 	${SED} -i'_orig' \
@@ -86,19 +95,6 @@ pre-configure:
 		${WRKDIR}/${DISTNAME}/cmake/Findclang.cmake
 
 post-configure:
-	## Workaround for making CMake see the isolated prefix
-	${FIND} ${WRKSRC} -name CMakeCache\.txt -exec sed -i'_orig' \
-		-e 's,^CMAKE_INSTALL_PREFIX:PATH=.*,CMAKE_INSTALL_PREFIX:PATH='${PREFIX}/zig-master',' \
-		-e '/^CMAKE_CXX_FLAGS:/ s,$$, -I'${LLVM_ISOLATED_PREFIX}'/include,' \
-		-e '/^CMAKE_CXX_LINK_FLAGS:/ s,$$, -L'${LLVM_ISOLATED_PREFIX}'/lib -Wl\,-R'${LLVM_ISOLATED_PREFIX}'/lib,' \
-		-e '/^CMAKE_C_FLAGS:/ s,$$, -I'${LLVM_ISOLATED_PREFIX}'/include,' \
-		-e '/^CMAKE_EXE_LINKER_FLAGS:/ s,$$, -L'${LLVM_ISOLATED_PREFIX}'/lib -Wl\,-R'${LLVM_ISOLATED_PREFIX}'/lib,' \
-		-e '/^CMAKE_MODULE_LINKER_FLAGS:/ s,$$, -L'${LLVM_ISOLATED_PREFIX}'/lib -Wl\,-R'${LLVM_ISOLATED_PREFIX}'/lib,' \
-		-e '/^CMAKE_SHARED_LINKER_FLAGS:/ s,$$, -L'${LLVM_ISOLATED_PREFIX}'/lib -Wl\,-R'${LLVM_ISOLATED_PREFIX}'/lib,' \
-		-e '$$s,$$,\nCMAKE_INSTALL_RPATH:PATH='${LLVM_ISOLATED_PREFIX}'/lib,' \
-		-e '$$s,$$,\nCMAKE_INSTALL_RPATH_USE_LINK_PATH:BOOL=ON,' \
-		{} \;
-		#-e '/^CMAKE_PREFIX_PATH:/ s,=.*,=${LLVM_ISOLATED_PREFIX},' \
 	## Hardcode the path so that executing the linked
 	## /usr/pkg/bin/zig-master file doesn't say "unable to find zig
 	## installation directory"
