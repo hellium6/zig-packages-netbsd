@@ -39,6 +39,7 @@ In case you reached here check the following:
 ```sh
 cp -r pkgsrc/* /usr/pkgsrc/
 
+### For zig-master:
 cd /usr/pkgsrc/lang/llvm19
 make install
 
@@ -50,7 +51,12 @@ make install
 
 cd /usr/pkgsrc/lang/zig-master
 ### For 0.14.0 stable:
+### Install lang/llvm19, devel/lld19, lang/clang19 like above, then:
 ### cd /usr/pkgsrc/lang/zig-0.14.0
+### For 0.13.0 stable:
+### Install lang/llvm18, devel/lld18, lang/clang18
+### Then:
+### cd /usr/pkgsrc/lang/zig-0.13.0
 
 ## update DISTNAME in Makefile according to download URL
 ## read comment in the file for details
@@ -123,6 +129,7 @@ $ zig-master version
 ### Example:
 ### $ zig-0.14.0-dev.3462 version
 ### 0.14.0-dev.3462+edabcf619
+### This is similar to lang/zig-0.13.0
 
 ### typing zig-master every time is boring, so...
 $ alias zig=zig-master
@@ -150,6 +157,8 @@ $ pkg_info -a | grep ^zig
 zig-master-0.15.0-dev.77+aa8aa6625 Programming language designed for robustness and clarity
 ### For lang/zig-0.14.0 the output might be something like:
 ### zig-isolated0140-0.14.0 Programming language designed for robustness and clarity (prefix isolated)
+### For lang/zig-0.13.0 that might be something like:
+### zig-isolated0130-0.13.0nb1 Programming language designed for robustness and clarity (prefix isolated)
 $ doas pkg_delete zig-master-0.15.0-dev.77+aa8aa6625
 ```
 
@@ -180,6 +189,9 @@ $ zls-0.14.0 --version
 $ which zls-0.14.0
 /usr/pkg/bin/zls-0.14.0
 ### Use the above path in your text editor config to use this zls
+
+### For zig-0.13.0 (dev or stable) you need devel/zls-0.13.0
+### Just use the instructions for 0.14.0 above replacing it with 0.13.0
 ```
 
 Configuration example with vim:
