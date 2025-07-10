@@ -1,0 +1,19 @@
+# $NetBSD: buildlink3.mk,v 1.8 2024/07/06 15:45:08 adam Exp $
+
+BUILDLINK_TREE+=	lld
+
+.if !defined(LLD_BUILDLINK3_MK)
+LLD_BUILDLINK3_MK:=
+
+BUILDLINK_API_DEPENDS.lld+=	lld20>=20.0.0
+BUILDLINK_PKGSRCDIR.lld?=	../../devel/lld20
+
+## Consider the /usr/pkg/llvmXX prefix
+BUILDLINK_PASSTHRU_DIRS+=	${BUILDLINK_PREFIX.lld}/${LLVM_ISOLATED_PREFIX_BASENAME}
+BUILDLINK_INCDIRS.lld?=		${LLVM_ISOLATED_PREFIX_BASENAME}/include
+BUILDLINK_LIBDIRS.lld+=		${LLVM_ISOLATED_PREFIX_BASENAME}/lib
+
+.include "../../lang/llvm20/buildlink3.mk"
+.endif	# LLD_BUILDLINK3_MK
+
+BUILDLINK_TREE+=	-lld

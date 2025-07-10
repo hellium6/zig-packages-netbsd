@@ -65,7 +65,7 @@ ZIGF=$(curl -s https://ziglang.org/download/ | grep '\-dev' | head -n1 | sed -ne
 ## put the fetched value in previous command as DISTNAME
 sed -i -e "s/^DISTNAME=.*/DISTNAME=	$ZIGF/" Makefile
 ## or enter manually
-#sed -i -e 's/^DISTNAME=.*/DISTNAME=	zig-0.15.0-dev.56+d0911786c/' Makefile
+#sed -i -e 's/^DISTNAME=.*/DISTNAME=	zig-0.15.0-dev.929+31e46be74/' Makefile
 ## optionally change MASTER_SITES to use a mirror
 sed -i -e 's/^MASTER_SITES=.*/MASTER_SITES=	https:\/\/zig.linus.dev\/zig\//' Makefile
 make makesum  # update checksums according to new DISTNAME
@@ -109,9 +109,9 @@ Target: x86_64-unknown-netbsd10.0
 Thread model: posix
 InstalledDir: /usr/pkg/llvm19/bin
 $ zig-master version
-0.15.0-dev.77+aa8aa6625
+0.15.0-dev.300+9e21ba12d
 $ pkg_info -a | grep ^zig
-zig-master-0.15.0-dev.77+aa8aa6625 Programming language designed for robustness and clarity
+zig-master-0.15.0-dev.300+9e21ba12d Programming language designed for robustness and clarity
 ```
 
 Example of working with both Zig and Zig master on the same system:
@@ -123,7 +123,7 @@ $ doas pkgin in zig
 $ zig version
 0.13.0
 $ zig-master version
-0.15.0-dev.77+aa8aa6625
+0.15.0-dev.300+9e21ba12d
 ### For lang/zig-0.14.0 you'd have to run zig-0.14.0 or
 ### if you've changed DISTNAME, type "zig" and press tab twice for hint.
 ### Example:
@@ -135,7 +135,7 @@ $ zig-master version
 $ alias zig=zig-master
 ### above can be added in ~/.bashrc to do this automatically on startup
 $ zig version
-0.15.0-dev.77+aa8aa6625
+0.15.0-dev.300+9e21ba12d
 $ cd `mktemp -d`
 $ zig init
 info: created build.zig
@@ -154,12 +154,12 @@ Example of uninstalling a package:
 
 ```sh
 $ pkg_info -a | grep ^zig
-zig-master-0.15.0-dev.77+aa8aa6625 Programming language designed for robustness and clarity
+zig-master-0.15.0-dev.300+9e21ba12d Programming language designed for robustness and clarity
 ### For lang/zig-0.14.0 the output might be something like:
 ### zig-isolated0140-0.14.0 Programming language designed for robustness and clarity (prefix isolated)
 ### For lang/zig-0.13.0 that might be something like:
 ### zig-isolated0130-0.13.0nb1 Programming language designed for robustness and clarity (prefix isolated)
-$ doas pkg_delete zig-master-0.15.0-dev.77+aa8aa6625
+$ doas pkg_delete zig-master-0.15.0-dev.300+9e21ba12d
 ```
 
 ### ZLS
