@@ -3,18 +3,32 @@
 ## Update DISTNAME according to the latest master download URL and run
 ## "make makesum" after that.
 ## Example: If the URL is:
-## https://ziglang.org/builds/zig-0.15.0-dev.77+aa8aa6625.tar.xz
-## then this value would be: zig-0.15.0-dev.77+aa8aa6625
+## https://ziglang.org/builds/zig-0.15.0-dev.300+9e21ba12d.tar.xz
+## then this value would be: zig-0.15.0-dev.300+9e21ba12d
 ## Meaning, filename minus the .tar.xz extension
-DISTNAME=	zig-0.15.0-dev.77+aa8aa6625
+DISTNAME=	zig-0.15.0-dev.929+31e46be74
 ## To make this a separate package than lang/zig
 PKGNAME=	${DISTNAME:S/zig-/zig-master-/}
 CATEGORIES=	lang
 ## https://ziglang.org/builds/ is the official
-MASTER_SITES=	https://ziglang.org/builds/
+# MASTER_SITES=	https://ziglang.org/builds/
 ## Alternate mirror
-#MASTER_SITES=	https://zig.linus.dev/zig/
+MASTER_SITES=	https://zig.linus.dev/zig/
 EXTRACT_SUFX=	.tar.xz
+
+## Extract dev build number from DISTNAME
+## First :C is for dev versions, later one is for stable
+BUILD_NUMBER=	${DISTNAME:C/.*\-dev\.([0-9]+).*/\1/:C/zig\-.*/0/}
+## Builds after 5 Apr 2025 need LLVM 20 instead of LLVM 19 required
+## before this change. Seems to have started from build no. 233.
+## https://github.com/ziglang/zig/commit/0cd31fc7ff157551cfbba5da35cd79f118d2a2e3#diff-1e7de1ae2d059d21e1dd75d5812d5a34b0222cef273b7c3a2af62eb747f9d20a
+.if ${BUILD_NUMBER:R} >= 233
+REQUIRED_LLVM_MAJOR_VERSION=	20
+.else
+REQUIRED_LLVM_MAJOR_VERSION=	19
+.endif
+# .info "(i) Using LLVM ${REQUIRED_LLVM_MAJOR_VERSION}"
+
 
 MAINTAINER=	pkgsrc-users@NetBSD.org
 HOMEPAGE=	https://ziglang.org/
@@ -33,15 +47,13 @@ CMAKE_CONFIGURE_ARGS+=	-DZIG_SHARED_LLVM=ON
 CMAKE_CONFIGURE_ARGS+=	-DZIG_TARGET_MCPU=baseline
 #CMAKE_CONFIGURE_ARGS+=	-DZIG_PIE=ON
 
-## Make it see files from the path of lang/llvm19
-.include "../../lang/llvm19/isolatedversion.mk"
+## Make it see files from the path of lang/llvmXX
+.include "../../lang/llvm${REQUIRED_LLVM_MAJOR_VERSION}/isolatedversion.mk"
 LDFLAGS+=		-L${LLVM_ISOLATED_PREFIX}/lib -Wl,-R${LLVM_ISOLATED_PREFIX}/lib
 CMAKE_CONFIGURE_ARGS+=	-DCMAKE_CXX_LINK_FLAGS=${LDFLAGS:Q}
 CMAKE_CONFIGURE_ARGS+=	-DCMAKE_C_LINK_FLAGS=${LDFLAGS:Q}
 ## Because zig build can't find libxml etc. if not set to /usr/pkg
 CMAKE_CONFIGURE_ARGS+=	-DCMAKE_PREFIX_PATH=${PREFIX}
-## Print every CMake command being run (for debugging/troubleshooting)
-MAKE_ENV+=	VERBOSE=1
 ## Fix for "libclang-cpp.so.xx.y" not found.
 ## CMake things don't seem to work here because it is done with zig's
 ## build system. Also MAKE_ENV doesn't send the vars (esp.
@@ -50,6 +62,9 @@ MAKE_ENV+=	VERBOSE=1
 MAKE_ENV+=	LD_LIBRARY_PATH=${LLVM_ISOLATED_PREFIX}/lib:/usr/pkg/lib:/usr/lib
 MAKE_ENV+=	LDFLAGS=-Wl,-R${LLVM_ISOLATED_PREFIX}/lib
 MAKE_ENV+=	LDFLAGS=-L/usr/pkg/lib
+
+## Print every CMake command being run (for debugging/troubleshooting)
+MAKE_ENV+=	VERBOSE=1
 
 MAKE_ENV+=	ZIG_GLOBAL_CACHE_DIR=${WRKDIR}/zig-master-global-cache
 MAKE_ENV+=	ZIG_LOCAL_CACHE_DIR=${WRKDIR}/zig-master-local-cache
@@ -116,7 +131,7 @@ do-test:
 		--zig-lib-dir ${WRKSRC}/lib
 
 .include "../../devel/cmake/build.mk"
-.include "../../devel/lld19/buildlink3.mk"
-.include "../../lang/clang19/buildlink3.mk"
-.include "../../lang/llvm19/buildlink3.mk"
+.include "../../devel/lld${REQUIRED_LLVM_MAJOR_VERSION}/buildlink3.mk"
+.include "../../lang/clang${REQUIRED_LLVM_MAJOR_VERSION}/buildlink3.mk"
+.include "../../lang/llvm${REQUIRED_LLVM_MAJOR_VERSION}/buildlink3.mk"
 .include "../../mk/bsd.pkg.mk"

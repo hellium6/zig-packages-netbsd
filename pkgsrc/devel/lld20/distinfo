@@ -1,0 +1,13 @@
+$NetBSD: distinfo,v 1.24 2024/07/06 15:45:08 adam Exp $
+
+BLAKE2s (cmake-20.1.6.src.tar.xz) = f72b52fc2d78065651175d7d654d1cf75799a4581641f85c63aebb1ea2bc8c60
+SHA512 (cmake-20.1.6.src.tar.xz) = 6606f362bc84d986bc54925ea67a9cdd3ca50b730a6a308949ce851ee43d137b62e1bad11292af071224f80313501c18b1f291bf1084ba08bfa27adc5627ab83
+Size (cmake-20.1.6.src.tar.xz) = 8644 bytes
+BLAKE2s (lld-20.1.6.src.tar.xz) = 16ccc3aa49ae60500c065b89ca5dba773cc26e29affc4ec0121c7b8240ef39d6
+SHA512 (lld-20.1.6.src.tar.xz) = 519f2fed14c35098363fed611f235759c69749e091b8b3661c61430dc2e85f65d43155dcb17352be0a63280527b7e38552b692672c6fd2202da84c992100d39c
+Size (lld-20.1.6.src.tar.xz) = 1720344 bytes
+BLAKE2s (runtimes-20.1.6.src.tar.xz) = d7560527b16ff68f15c50c0a5a59c6299cfa36252b5af947715a23c367348e3e
+SHA512 (runtimes-20.1.6.src.tar.xz) = 5155f8b9494596d08c7af06ace8b5c5193f001eb182f931ee84af11e834058e5ff8b8deb945ff0b72bb759c84bccd83de8086ddf973cd93d86b91f4c9bec3f18
+Size (runtimes-20.1.6.src.tar.xz) = 8332 bytes
+SHA1 (patch-ELF_Config.h) = 484d0818bd4a92f2faafa1337d3f2f08cab4c0fc
+SHA1 (patch-ELF_Options.td) = c81907d6e5e099ed2c26de972c6744b7197de3d3
