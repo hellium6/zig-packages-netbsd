@@ -1,6 +1,13 @@
 @comment $NetBSD$
 bin/zig-master
 zig-master/bin/zig
+zig-master/lib/zig/build-web/fuzz.zig
+zig-master/lib/zig/build-web/index.html
+zig-master/lib/zig/build-web/main.js
+zig-master/lib/zig/build-web/main.zig
+zig-master/lib/zig/build-web/style.css
+zig-master/lib/zig/build-web/time_report.css
+zig-master/lib/zig/build-web/time_report.zig
 zig-master/lib/zig/c.zig
 zig-master/lib/zig/c/common.zig
 zig-master/lib/zig/c/inttypes.zig
@@ -402,9 +409,7 @@ zig-master/lib/zig/docs/wasm/markdown/Document.zig
 zig-master/lib/zig/docs/wasm/markdown/Parser.zig
 zig-master/lib/zig/docs/wasm/markdown/renderer.zig
 zig-master/lib/zig/fuzzer.zig
-zig-master/lib/zig/fuzzer/web/index.html
-zig-master/lib/zig/fuzzer/web/main.js
-zig-master/lib/zig/fuzzer/web/main.zig
+zig-master/lib/zig/include/87b3655320e6b2a4
 zig-master/lib/zig/include/__stdarg___gnuc_va_list.h
 zig-master/lib/zig/include/__stdarg___va_copy.h
 zig-master/lib/zig/include/__stdarg_header_macro.h
@@ -6067,6 +6072,8 @@ zig-master/lib/zig/libc/include/generic-glibc/bits/getopt_posix.h
 zig-master/lib/zig/libc/include/generic-glibc/bits/hwcap.h
 zig-master/lib/zig/libc/include/generic-glibc/bits/in.h
 zig-master/lib/zig/libc/include/generic-glibc/bits/indirect-return.h
+zig-master/lib/zig/libc/include/generic-glibc/bits/inet-fortified-decl.h
+zig-master/lib/zig/libc/include/generic-glibc/bits/inet-fortified.h
 zig-master/lib/zig/libc/include/generic-glibc/bits/initspin.h
 zig-master/lib/zig/libc/include/generic-glibc/bits/inotify.h
 zig-master/lib/zig/libc/include/generic-glibc/bits/ioctl-types.h
@@ -6185,6 +6192,7 @@ zig-master/lib/zig/libc/include/generic-glibc/bits/termios-c_cflag.h
 zig-master/lib/zig/libc/include/generic-glibc/bits/termios-c_iflag.h
 zig-master/lib/zig/libc/include/generic-glibc/bits/termios-c_lflag.h
 zig-master/lib/zig/libc/include/generic-glibc/bits/termios-c_oflag.h
+zig-master/lib/zig/libc/include/generic-glibc/bits/termios-cbaud.h
 zig-master/lib/zig/libc/include/generic-glibc/bits/termios-misc.h
 zig-master/lib/zig/libc/include/generic-glibc/bits/termios-struct.h
 zig-master/lib/zig/libc/include/generic-glibc/bits/termios-tcflow.h
@@ -6504,7 +6512,6 @@ zig-master/lib/zig/libc/include/generic-glibc/syscall.h
 zig-master/lib/zig/libc/include/generic-glibc/sysexits.h
 zig-master/lib/zig/libc/include/generic-glibc/syslog.h
 zig-master/lib/zig/libc/include/generic-glibc/tar.h
-zig-master/lib/zig/libc/include/generic-glibc/termio.h
 zig-master/lib/zig/libc/include/generic-glibc/termios.h
 zig-master/lib/zig/libc/include/generic-glibc/tgmath.h
 zig-master/lib/zig/libc/include/generic-glibc/thread_db.h
@@ -8542,7 +8549,6 @@ zig-master/lib/zig/libc/include/mips-linux-gnu/bits/struct_mutex.h
 zig-master/lib/zig/libc/include/mips-linux-gnu/bits/struct_rwlock.h
 zig-master/lib/zig/libc/include/mips-linux-gnu/bits/termios-c_cc.h
 zig-master/lib/zig/libc/include/mips-linux-gnu/bits/termios-c_lflag.h
-zig-master/lib/zig/libc/include/mips-linux-gnu/bits/termios-struct.h
 zig-master/lib/zig/libc/include/mips-linux-gnu/bits/termios-tcflow.h
 zig-master/lib/zig/libc/include/mips-linux-gnu/bits/timerfd.h
 zig-master/lib/zig/libc/include/mips-linux-gnu/bits/types/stack_t.h
@@ -8729,12 +8735,12 @@ zig-master/lib/zig/libc/include/powerpc-linux-gnu/bits/socket-constants.h
 zig-master/lib/zig/libc/include/powerpc-linux-gnu/bits/struct_mutex.h
 zig-master/lib/zig/libc/include/powerpc-linux-gnu/bits/struct_rwlock.h
 zig-master/lib/zig/libc/include/powerpc-linux-gnu/bits/struct_stat.h
-zig-master/lib/zig/libc/include/powerpc-linux-gnu/bits/termios-baud.h
 zig-master/lib/zig/libc/include/powerpc-linux-gnu/bits/termios-c_cc.h
 zig-master/lib/zig/libc/include/powerpc-linux-gnu/bits/termios-c_cflag.h
 zig-master/lib/zig/libc/include/powerpc-linux-gnu/bits/termios-c_iflag.h
 zig-master/lib/zig/libc/include/powerpc-linux-gnu/bits/termios-c_lflag.h
 zig-master/lib/zig/libc/include/powerpc-linux-gnu/bits/termios-c_oflag.h
+zig-master/lib/zig/libc/include/powerpc-linux-gnu/bits/termios-cbaud.h
 zig-master/lib/zig/libc/include/powerpc-linux-gnu/bits/termios-misc.h
 zig-master/lib/zig/libc/include/powerpc-linux-gnu/bits/timesize.h
 zig-master/lib/zig/libc/include/powerpc-linux-gnu/bits/types/struct_msqid_ds.h
@@ -9108,10 +9114,9 @@ zig-master/lib/zig/libc/include/sparc-linux-gnu/bits/socket-constants.h
 zig-master/lib/zig/libc/include/sparc-linux-gnu/bits/socket_type.h
 zig-master/lib/zig/libc/include/sparc-linux-gnu/bits/struct_rwlock.h
 zig-master/lib/zig/libc/include/sparc-linux-gnu/bits/struct_stat.h
-zig-master/lib/zig/libc/include/sparc-linux-gnu/bits/termios-baud.h
 zig-master/lib/zig/libc/include/sparc-linux-gnu/bits/termios-c_cc.h
 zig-master/lib/zig/libc/include/sparc-linux-gnu/bits/termios-c_oflag.h
-zig-master/lib/zig/libc/include/sparc-linux-gnu/bits/termios-struct.h
+zig-master/lib/zig/libc/include/sparc-linux-gnu/bits/termios-cbaud.h
 zig-master/lib/zig/libc/include/sparc-linux-gnu/bits/timerfd.h
 zig-master/lib/zig/libc/include/sparc-linux-gnu/bits/timesize.h
 zig-master/lib/zig/libc/include/sparc-linux-gnu/bits/types/struct_msqid_ds.h
@@ -17601,8 +17606,6 @@ zig-master/lib/zig/std/Build/Cache/DepTokenizer.zig
 zig-master/lib/zig/std/Build/Cache/Directory.zig
 zig-master/lib/zig/std/Build/Cache/Path.zig
 zig-master/lib/zig/std/Build/Fuzz.zig
-zig-master/lib/zig/std/Build/Fuzz/WebServer.zig
-zig-master/lib/zig/std/Build/Fuzz/abi.zig
 zig-master/lib/zig/std/Build/Module.zig
 zig-master/lib/zig/std/Build/Step.zig
 zig-master/lib/zig/std/Build/Step/CheckFile.zig
@@ -17622,7 +17625,25 @@ zig-master/lib/zig/std/Build/Step/TranslateC.zig
 zig-master/lib/zig/std/Build/Step/UpdateSourceFiles.zig
 zig-master/lib/zig/std/Build/Step/WriteFile.zig
 zig-master/lib/zig/std/Build/Watch.zig
+zig-master/lib/zig/std/Build/Watch/FsEvents.zig
+zig-master/lib/zig/std/Build/WebServer.zig
+zig-master/lib/zig/std/Build/abi.zig
 zig-master/lib/zig/std/DoublyLinkedList.zig
+zig-master/lib/zig/std/Io.zig
+zig-master/lib/zig/std/Io/DeprecatedReader.zig
+zig-master/lib/zig/std/Io/DeprecatedWriter.zig
+zig-master/lib/zig/std/Io/Reader.zig
+zig-master/lib/zig/std/Io/Reader/Limited.zig
+zig-master/lib/zig/std/Io/Reader/test.zig
+zig-master/lib/zig/std/Io/Writer.zig
+zig-master/lib/zig/std/Io/buffered_reader.zig
+zig-master/lib/zig/std/Io/buffered_writer.zig
+zig-master/lib/zig/std/Io/counting_reader.zig
+zig-master/lib/zig/std/Io/counting_writer.zig
+zig-master/lib/zig/std/Io/fixed_buffer_stream.zig
+zig-master/lib/zig/std/Io/limited_reader.zig
+zig-master/lib/zig/std/Io/test.zig
+zig-master/lib/zig/std/Io/tty.zig
 zig-master/lib/zig/std/Progress.zig
 zig-master/lib/zig/std/Random.zig
 zig-master/lib/zig/std/Random/Ascon.zig
@@ -17689,6 +17710,7 @@ zig-master/lib/zig/std/bounded_array.zig
 zig-master/lib/zig/std/buf_map.zig
 zig-master/lib/zig/std/buf_set.zig
 zig-master/lib/zig/std/builtin.zig
+zig-master/lib/zig/std/builtin/assembly.zig
 zig-master/lib/zig/std/c.zig
 zig-master/lib/zig/std/c/darwin.zig
 zig-master/lib/zig/std/c/dragonfly.zig
@@ -17701,21 +17723,12 @@ zig-master/lib/zig/std/c/solaris.zig
 zig-master/lib/zig/std/coff.zig
 zig-master/lib/zig/std/compress.zig
 zig-master/lib/zig/std/compress/flate.zig
-zig-master/lib/zig/std/compress/flate/CircularBuffer.zig
+zig-master/lib/zig/std/compress/flate/BlockWriter.zig
+zig-master/lib/zig/std/compress/flate/Compress.zig
+zig-master/lib/zig/std/compress/flate/Decompress.zig
+zig-master/lib/zig/std/compress/flate/HuffmanEncoder.zig
 zig-master/lib/zig/std/compress/flate/Lookup.zig
-zig-master/lib/zig/std/compress/flate/SlidingWindow.zig
 zig-master/lib/zig/std/compress/flate/Token.zig
-zig-master/lib/zig/std/compress/flate/bit_reader.zig
-zig-master/lib/zig/std/compress/flate/bit_writer.zig
-zig-master/lib/zig/std/compress/flate/block_writer.zig
-zig-master/lib/zig/std/compress/flate/consts.zig
-zig-master/lib/zig/std/compress/flate/container.zig
-zig-master/lib/zig/std/compress/flate/deflate.zig
-zig-master/lib/zig/std/compress/flate/huffman_decoder.zig
-zig-master/lib/zig/std/compress/flate/huffman_encoder.zig
-zig-master/lib/zig/std/compress/flate/inflate.zig
-zig-master/lib/zig/std/compress/flate/testdata/block_writer.zig
-zig-master/lib/zig/std/compress/gzip.zig
 zig-master/lib/zig/std/compress/lzma.zig
 zig-master/lib/zig/std/compress/lzma/decode.zig
 zig-master/lib/zig/std/compress/lzma/decode/lzbuffer.zig
@@ -17727,14 +17740,8 @@ zig-master/lib/zig/std/compress/lzma2/decode.zig
 zig-master/lib/zig/std/compress/xz.zig
 zig-master/lib/zig/std/compress/xz/block.zig
 zig-master/lib/zig/std/compress/xz/test.zig
-zig-master/lib/zig/std/compress/zlib.zig
-zig-master/lib/zig/std/compress/zstandard.zig
-zig-master/lib/zig/std/compress/zstandard/decode/block.zig
-zig-master/lib/zig/std/compress/zstandard/decode/fse.zig
-zig-master/lib/zig/std/compress/zstandard/decode/huffman.zig
-zig-master/lib/zig/std/compress/zstandard/decompress.zig
-zig-master/lib/zig/std/compress/zstandard/readers.zig
-zig-master/lib/zig/std/compress/zstandard/types.zig
+zig-master/lib/zig/std/compress/zstd.zig
+zig-master/lib/zig/std/compress/zstd/Decompress.zig
 zig-master/lib/zig/std/crypto.zig
 zig-master/lib/zig/std/crypto/25519/curve25519.zig
 zig-master/lib/zig/std/crypto/25519/ed25519.zig
@@ -17746,6 +17753,7 @@ zig-master/lib/zig/std/crypto/25519/x25519.zig
 zig-master/lib/zig/std/crypto/Certificate.zig
 zig-master/lib/zig/std/crypto/Certificate/Bundle.zig
 zig-master/lib/zig/std/crypto/Certificate/Bundle/macos.zig
+zig-master/lib/zig/std/crypto/Sha1.zig
 zig-master/lib/zig/std/crypto/aegis.zig
 zig-master/lib/zig/std/crypto/aes.zig
 zig-master/lib/zig/std/crypto/aes/aesni.zig
@@ -17808,7 +17816,6 @@ zig-master/lib/zig/std/crypto/phc_encoding.zig
 zig-master/lib/zig/std/crypto/poly1305.zig
 zig-master/lib/zig/std/crypto/salsa20.zig
 zig-master/lib/zig/std/crypto/scrypt.zig
-zig-master/lib/zig/std/crypto/sha1.zig
 zig-master/lib/zig/std/crypto/sha2.zig
 zig-master/lib/zig/std/crypto/sha3.zig
 zig-master/lib/zig/std/crypto/siphash.zig
@@ -17843,7 +17850,7 @@ zig-master/lib/zig/std/elf.zig
 zig-master/lib/zig/std/enums.zig
 zig-master/lib/zig/std/fifo.zig
 zig-master/lib/zig/std/fmt.zig
-zig-master/lib/zig/std/fmt/format_float.zig
+zig-master/lib/zig/std/fmt/float.zig
 zig-master/lib/zig/std/fmt/parse_float.zig
 zig-master/lib/zig/std/fmt/parse_float/FloatInfo.zig
 zig-master/lib/zig/std/fmt/parse_float/FloatStream.zig
@@ -17864,8 +17871,7 @@ zig-master/lib/zig/std/fs/test.zig
 zig-master/lib/zig/std/fs/wasi.zig
 zig-master/lib/zig/std/gpu.zig
 zig-master/lib/zig/std/hash.zig
-zig-master/lib/zig/std/hash/RapidHash.zig
-zig-master/lib/zig/std/hash/adler.zig
+zig-master/lib/zig/std/hash/Adler32.zig
 zig-master/lib/zig/std/hash/auto_hash.zig
 zig-master/lib/zig/std/hash/benchmark.zig
 zig-master/lib/zig/std/hash/cityhash.zig
@@ -17897,40 +17903,17 @@ zig-master/lib/zig/std/http/Server.zig
 zig-master/lib/zig/std/http/WebSocket.zig
 zig-master/lib/zig/std/http/protocol.zig
 zig-master/lib/zig/std/http/test.zig
-zig-master/lib/zig/std/io.zig
-zig-master/lib/zig/std/io/Reader.zig
-zig-master/lib/zig/std/io/Reader/test.zig
-zig-master/lib/zig/std/io/Writer.zig
-zig-master/lib/zig/std/io/bit_reader.zig
-zig-master/lib/zig/std/io/bit_writer.zig
-zig-master/lib/zig/std/io/buffered_atomic_file.zig
-zig-master/lib/zig/std/io/buffered_reader.zig
-zig-master/lib/zig/std/io/buffered_writer.zig
-zig-master/lib/zig/std/io/c_writer.zig
-zig-master/lib/zig/std/io/change_detection_stream.zig
-zig-master/lib/zig/std/io/counting_reader.zig
-zig-master/lib/zig/std/io/counting_writer.zig
-zig-master/lib/zig/std/io/find_byte_writer.zig
-zig-master/lib/zig/std/io/fixed_buffer_stream.zig
-zig-master/lib/zig/std/io/limited_reader.zig
-zig-master/lib/zig/std/io/multi_writer.zig
-zig-master/lib/zig/std/io/seekable_stream.zig
-zig-master/lib/zig/std/io/stream_source.zig
-zig-master/lib/zig/std/io/test.zig
-zig-master/lib/zig/std/io/tty.zig
 zig-master/lib/zig/std/json.zig
 zig-master/lib/zig/std/json/JSONTestSuite_test.zig
+zig-master/lib/zig/std/json/Scanner.zig
+zig-master/lib/zig/std/json/Stringify.zig
 zig-master/lib/zig/std/json/dynamic.zig
 zig-master/lib/zig/std/json/dynamic_test.zig
-zig-master/lib/zig/std/json/fmt.zig
 zig-master/lib/zig/std/json/hashmap.zig
 zig-master/lib/zig/std/json/hashmap_test.zig
-zig-master/lib/zig/std/json/scanner.zig
 zig-master/lib/zig/std/json/scanner_test.zig
 zig-master/lib/zig/std/json/static.zig
 zig-master/lib/zig/std/json/static_test.zig
-zig-master/lib/zig/std/json/stringify.zig
-zig-master/lib/zig/std/json/stringify_test.zig
 zig-master/lib/zig/std/json/test.zig
 zig-master/lib/zig/std/leb128.zig
 zig-master/lib/zig/std/log.zig
@@ -18010,6 +17993,7 @@ zig-master/lib/zig/std/net/test.zig
 zig-master/lib/zig/std/once.zig
 zig-master/lib/zig/std/os.zig
 zig-master/lib/zig/std/os/emscripten.zig
+zig-master/lib/zig/std/os/freebsd.zig
 zig-master/lib/zig/std/os/linux.zig
 zig-master/lib/zig/std/os/linux/IoUring.zig
 zig-master/lib/zig/std/os/linux/aarch64.zig
@@ -18108,8 +18092,8 @@ zig-master/lib/zig/std/start.zig
 zig-master/lib/zig/std/static_string_map.zig
 zig-master/lib/zig/std/std.zig
 zig-master/lib/zig/std/tar.zig
+zig-master/lib/zig/std/tar/Writer.zig
 zig-master/lib/zig/std/tar/test.zig
-zig-master/lib/zig/std/tar/writer.zig
 zig-master/lib/zig/std/testing.zig
 zig-master/lib/zig/std/testing/FailingAllocator.zig
 zig-master/lib/zig/std/time.zig
@@ -18125,6 +18109,7 @@ zig-master/lib/zig/std/valgrind/memcheck.zig
 zig-master/lib/zig/std/wasm.zig
 zig-master/lib/zig/std/zig.zig
 zig-master/lib/zig/std/zig/Ast.zig
+zig-master/lib/zig/std/zig/Ast/Render.zig
 zig-master/lib/zig/std/zig/AstGen.zig
 zig-master/lib/zig/std/zig/AstRlAnnotate.zig
 zig-master/lib/zig/std/zig/BuiltinFn.zig
@@ -18149,7 +18134,6 @@ zig-master/lib/zig/std/zig/number_literal.zig
 zig-master/lib/zig/std/zig/parser_test.zig
 zig-master/lib/zig/std/zig/perf_test.zig
 zig-master/lib/zig/std/zig/primitives.zig
-zig-master/lib/zig/std/zig/render.zig
 zig-master/lib/zig/std/zig/string_literal.zig
 zig-master/lib/zig/std/zig/system.zig
 zig-master/lib/zig/std/zig/system/NativePaths.zig
@@ -18162,8 +18146,8 @@ zig-master/lib/zig/std/zig/system/x86.zig
 zig-master/lib/zig/std/zig/target.zig
 zig-master/lib/zig/std/zig/tokenizer.zig
 zig-master/lib/zig/std/zip.zig
-zig-master/lib/zig/std/zip/test.zig
 zig-master/lib/zig/std/zon.zig
+zig-master/lib/zig/std/zon/Serializer.zig
 zig-master/lib/zig/std/zon/parse.zig
 zig-master/lib/zig/std/zon/stringify.zig
 zig-master/lib/zig/ubsan_rt.zig
@@ -18174,4 +18158,3 @@ zig-master/lib/zig/zig.h
 @pkgdir zig-master/lib/zig/std/compress/testdata
 @pkgdir zig-master/lib/zig/std/compress/lzma/testdata
 @pkgdir zig-master/lib/zig/std/compress/flate/testdata/fuzz
-@pkgdir zig-master/lib/zig/std/compress/flate/testdata/block_writer

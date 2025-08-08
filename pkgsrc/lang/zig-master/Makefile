@@ -6,7 +6,7 @@
 ## https://ziglang.org/builds/zig-0.15.0-dev.300+9e21ba12d.tar.xz
 ## then this value would be: zig-0.15.0-dev.300+9e21ba12d
 ## Meaning, filename minus the .tar.xz extension
-DISTNAME=	zig-0.15.0-dev.929+31e46be74
+DISTNAME=	zig-0.15.0-dev.1380+e98aeeb73
 ## To make this a separate package than lang/zig
 PKGNAME=	${DISTNAME:S/zig-/zig-master-/}
 CATEGORIES=	lang
