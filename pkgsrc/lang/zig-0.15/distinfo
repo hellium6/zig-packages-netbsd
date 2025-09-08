@@ -1,0 +1,5 @@
+$NetBSD$
+
+BLAKE2s (zig-0.15.1.tar.xz) = ceaf721b2004783441df27174f0a21c0f7818ec3ae1cfcb503ed4886527c15b7
+SHA512 (zig-0.15.1.tar.xz) = 8e3e99a399d1ab99c0c6d1d19a995dd8b6e15401c0c2a70d8e2a220d134bed5bec34b158b3018185cf8bb71d9ee429179d8fb3e6db05c495269ab8afd805fc3a
+Size (zig-0.15.1.tar.xz) = 21359884 bytes
