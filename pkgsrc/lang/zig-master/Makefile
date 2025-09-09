@@ -3,10 +3,10 @@
 ## Update DISTNAME according to the latest master download URL and run
 ## "make makesum" after that.
 ## Example: If the URL is:
-## https://ziglang.org/builds/zig-0.15.0-dev.300+9e21ba12d.tar.xz
-## then this value would be: zig-0.15.0-dev.300+9e21ba12d
+## https://ziglang.org/builds/zig-0.16.0-dev.191+9fa2394f8.tar.xz
+## then this value would be: zig-0.16.0-dev.191+9fa2394f8
 ## Meaning, filename minus the .tar.xz extension
-DISTNAME=	zig-0.15.0-dev.1380+e98aeeb73
+DISTNAME=	zig-0.16.0-dev.205+4c0127566
 ## To make this a separate package than lang/zig
 PKGNAME=	${DISTNAME:S/zig-/zig-master-/}
 CATEGORIES=	lang
@@ -15,24 +15,21 @@ CATEGORIES=	lang
 ## Alternate mirror
 MASTER_SITES=	https://zig.linus.dev/zig/
 EXTRACT_SUFX=	.tar.xz
+## Used mainly for /usr/pkg/xx directory and binary symlink name.
+## e.g. If this is "zig-0.16.0" (a) zig will be installed in
+## /usr/pkg/zig-0.16.0, (b) symlinked as /usr/pkg/bin/zig-0.16.0 and
+## (c) can be used by running "zig-0.16.0". "+" causes Zig binary to not
+## be available on double tab press. So "+" should not be included here.
+## Optionally build number can be removed to make it shorter.
+PACKAGE_SLUG=	zig-master
 
-## Extract dev build number from DISTNAME
-## First :C is for dev versions, later one is for stable
-BUILD_NUMBER=	${DISTNAME:C/.*\-dev\.([0-9]+).*/\1/:C/zig\-.*/0/}
-## Builds after 5 Apr 2025 need LLVM 20 instead of LLVM 19 required
-## before this change. Seems to have started from build no. 233.
-## https://github.com/ziglang/zig/commit/0cd31fc7ff157551cfbba5da35cd79f118d2a2e3#diff-1e7de1ae2d059d21e1dd75d5812d5a34b0222cef273b7c3a2af62eb747f9d20a
-.if ${BUILD_NUMBER:R} >= 233
-REQUIRED_LLVM_MAJOR_VERSION=	20
-.else
-REQUIRED_LLVM_MAJOR_VERSION=	19
-.endif
+REQUIRED_LLVM_MAJOR_VERSION=	21
 # .info "(i) Using LLVM ${REQUIRED_LLVM_MAJOR_VERSION}"
 
 
 MAINTAINER=	pkgsrc-users@NetBSD.org
 HOMEPAGE=	https://ziglang.org/
-COMMENT=	Programming language designed for robustness and clarity
+COMMENT=	Programming language designed for robustness and clarity (prefix isolated)
 LICENSE=	mit
 
 # Fails to build in chroot on netbsd: https://github.com/ziglang/zig/issues/19756
@@ -66,8 +63,8 @@ MAKE_ENV+=	LDFLAGS=-L/usr/pkg/lib
 ## Print every CMake command being run (for debugging/troubleshooting)
 MAKE_ENV+=	VERBOSE=1
 
-MAKE_ENV+=	ZIG_GLOBAL_CACHE_DIR=${WRKDIR}/zig-master-global-cache
-MAKE_ENV+=	ZIG_LOCAL_CACHE_DIR=${WRKDIR}/zig-master-local-cache
+MAKE_ENV+=	ZIG_GLOBAL_CACHE_DIR=${WRKDIR}/${PACKAGE_SLUG}-global-cache
+MAKE_ENV+=	ZIG_LOCAL_CACHE_DIR=${WRKDIR}/${PACKAGE_SLUG}-local-cache
 
 CHECK_PORTABILITY_SKIP+=	ci/azure/macos_script
 BUILDLINK_TRANSFORM+=		rm:-Werror
@@ -92,7 +89,7 @@ pre-configure:
 		-e '1{h;s,.*,set(ENV{LDFLAGS} "-Wl\,-R'${LLVM_ISOLATED_PREFIX}'/lib -L'${LLVM_ISOLATED_PREFIX}'/lib $$\ENV{LDFLAGS}")\n,;G;}' \
 		-e '/set(ZIG_VERSION/ s,set(ZIG_VERSION "",set(ZIG_VERSION "${DISTNAME:S/zig-//}",' \
 		-e '/$${CMAKE_PREFIX_PATH}/ s,^,list(APPEND ZIG_CMAKE_PREFIX_PATH "${LLVM_ISOLATED_PREFIX}")\n,' \
-		-e '1{h;s,.*,set(CMAKE_INSTALL_PREFIX "${PREFIX}/zig-master" CACHE PATH "Directory to install zig to" FORCE)\n,;G;}' \
+		-e '1{h;s,.*,set(CMAKE_INSTALL_PREFIX "${PREFIX}/${PACKAGE_SLUG}" CACHE PATH "Directory to install zig to" FORCE)\n,;G;}' \
 		-e '$$s,$$,\nstring(APPEND CMAKE_CXX_FLAGS " -I${LLVM_ISOLATED_PREFIX}/include"),' \
 		-e '$$s,$$,\nstring(APPEND CMAKE_CXX_LINK_FLAGS " -L${LLVM_ISOLATED_PREFIX}/lib -Wl\,-R${LLVM_ISOLATED_PREFIX}/lib"),' \
 		-e '$$s,$$,\nstring(APPEND CMAKE_C_FLAGS " -I${LLVM_ISOLATED_PREFIX}/include"),' \
@@ -111,14 +108,14 @@ pre-configure:
 
 post-configure:
 	## Hardcode the path so that executing the linked
-	## /usr/pkg/bin/zig-master file doesn't say "unable to find zig
+	## /usr/pkg/bin/${PACKAGE_SLUG} file doesn't say "unable to find zig
 	## installation directory"
-	${SED} -i'_orig' -e 's,= self_exe_path;,= "/usr/pkg/zig-master/bin";\n    _ = self_exe_path;,' ${WRKDIR}/${DISTNAME}/src/introspect.zig
+	${SED} -i'_orig' -e 's,= self_exe_path;,= "/usr/pkg/${PACKAGE_SLUG}/bin";\n    _ = self_exe_path;,' ${WRKDIR}/${DISTNAME}/src/introspect.zig
 
 post-install:
 	## Binary link for isolated install
 	${MKDIR} -p ${DESTDIR}${PREFIX}/bin
-	${LN} -sf ${PREFIX}/zig-master/bin/zig ${DESTDIR}${PREFIX}/bin/zig-master
+	${LN} -sf ${PREFIX}/${PACKAGE_SLUG}/bin/zig ${DESTDIR}${PREFIX}/bin/${PACKAGE_SLUG}
 
 # after install, because the zig binary ends up in paths like
 # ./zig-0.10.1/zig-cache/o/e6445b80597d6bc8fe865e7254800ac9/zig
@@ -126,7 +123,7 @@ post-install:
 do-test:
 	mkdir ${WRKDIR}/cache
 	cd ${WRKSRC} && \
-		${DESTDIR}${PREFIX}/bin/zig-master build test-behavior \
+		${DESTDIR}${PREFIX}/bin/${PACKAGE_SLUG} build test-behavior \
 		--cache-dir ${WRKDIR}/cache --global-cache-dir ${WRKDIR}/cache \
 		--zig-lib-dir ${WRKSRC}/lib
 

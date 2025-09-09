@@ -1,0 +1,49 @@
+# $NetBSD: buildlink3.mk,v 1.30 2024/07/06 15:45:07 adam Exp $
+
+BUILDLINK_TREE+=	clang
+
+.if !defined(CLANG_BUILDLINK3_MK)
+CLANG_BUILDLINK3_MK:=
+
+BUILDLINK_API_DEPENDS.clang+=	clang21>=21.0.0
+BUILDLINK_ABI_DEPENDS.clang+=	clang21>=21.0.0
+BUILDLINK_PKGSRCDIR.clang?=	../../lang/clang21
+
+## Consider the /usr/pkg/llvmXX prefix
+BUILDLINK_PASSTHRU_DIRS+=	${BUILDLINK_PREFIX.clang}/${LLVM_ISOLATED_PREFIX_BASENAME}
+BUILDLINK_INCDIRS.clang?=	${LLVM_ISOLATED_PREFIX_BASENAME}/include
+BUILDLINK_LIBDIRS.clang+=	${LLVM_ISOLATED_PREFIX_BASENAME}/lib
+
+BUILDLINK_FILES.clang+=		${LLVM_ISOLATED_PREFIX_BASENAME}/bin/amdgpu-arch
+BUILDLINK_FILES.clang+=		${LLVM_ISOLATED_PREFIX_BASENAME}/bin/analyze-build
+BUILDLINK_FILES.clang+=		${LLVM_ISOLATED_PREFIX_BASENAME}/bin/c-index-test
+BUILDLINK_FILES.clang+=		${LLVM_ISOLATED_PREFIX_BASENAME}/bin/clang
+BUILDLINK_FILES.clang+=		${LLVM_ISOLATED_PREFIX_BASENAME}/bin/clang++
+BUILDLINK_FILES.clang+=		${LLVM_ISOLATED_PREFIX_BASENAME}/bin/clang-21
+BUILDLINK_FILES.clang+=		${LLVM_ISOLATED_PREFIX_BASENAME}/bin/clang-check
+BUILDLINK_FILES.clang+=		${LLVM_ISOLATED_PREFIX_BASENAME}/bin/clang-cl
+BUILDLINK_FILES.clang+=		${LLVM_ISOLATED_PREFIX_BASENAME}/bin/clang-cpp
+BUILDLINK_FILES.clang+=		${LLVM_ISOLATED_PREFIX_BASENAME}/bin/clang-extdef-mapping
+BUILDLINK_FILES.clang+=		${LLVM_ISOLATED_PREFIX_BASENAME}/bin/clang-format
+BUILDLINK_FILES.clang+=		${LLVM_ISOLATED_PREFIX_BASENAME}/bin/clang-linker-wrapper
+BUILDLINK_FILES.clang+=		${LLVM_ISOLATED_PREFIX_BASENAME}/bin/clang-offload-bundler
+BUILDLINK_FILES.clang+=		${LLVM_ISOLATED_PREFIX_BASENAME}/bin/clang-offload-packager
+BUILDLINK_FILES.clang+=		${LLVM_ISOLATED_PREFIX_BASENAME}/bin/clang-refactor
+BUILDLINK_FILES.clang+=		${LLVM_ISOLATED_PREFIX_BASENAME}/bin/clang-rename
+BUILDLINK_FILES.clang+=		${LLVM_ISOLATED_PREFIX_BASENAME}/bin/clang-repl
+BUILDLINK_FILES.clang+=		${LLVM_ISOLATED_PREFIX_BASENAME}/bin/clang-scan-deps
+BUILDLINK_FILES.clang+=		${LLVM_ISOLATED_PREFIX_BASENAME}/bin/diagtool
+BUILDLINK_FILES.clang+=		${LLVM_ISOLATED_PREFIX_BASENAME}/bin/git-clang-format
+BUILDLINK_FILES.clang+=		${LLVM_ISOLATED_PREFIX_BASENAME}/bin/hmaptool
+BUILDLINK_FILES.clang+=		${LLVM_ISOLATED_PREFIX_BASENAME}/bin/intercept-build
+BUILDLINK_FILES.clang+=		${LLVM_ISOLATED_PREFIX_BASENAME}/bin/nvptx-arch
+BUILDLINK_FILES.clang+=		${LLVM_ISOLATED_PREFIX_BASENAME}/bin/scan-build
+BUILDLINK_FILES.clang+=		${LLVM_ISOLATED_PREFIX_BASENAME}/bin/scan-build-py
+BUILDLINK_FILES.clang+=		${LLVM_ISOLATED_PREFIX_BASENAME}/bin/scan-view
+
+.include "../../textproc/libxml2/buildlink3.mk"
+.include "../../devel/zlib/buildlink3.mk"
+.include "../../lang/llvm21/buildlink3.mk"
+.endif	# CLANG_BUILDLINK3_MK
+
+BUILDLINK_TREE+=	-clang

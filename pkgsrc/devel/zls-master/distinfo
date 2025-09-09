@@ -1,5 +1,5 @@
 $NetBSD: distinfo,v 1.1 2024/04/29 13:27:52 nikita Exp $
 
-BLAKE2s (master.zip) = 26ee2f4248195e4f5895b32e12343f2a5f58fdc8af4ef65a9ad429fa20143f21
-SHA512 (master.zip) = ec25c0b8856639d440caf581a826f19250fe9c5a5f9e2091795e49ae21f37c186a2ec45b84db1aabeb60d4da1ea228039495225e3374a64f79c6bc8322259f18
-Size (master.zip) = 480489 bytes
+BLAKE2s (zls-master-0.16.0-dev/master.zip) = ff8f42eefe7bbdfc9bbe4b1178f8d31a9676ef2b62664441db99e7f8e5fdfeae
+SHA512 (zls-master-0.16.0-dev/master.zip) = ab706ae54bc09b4f0c476fe01bbecc04533a4e3f58fcae90722328d47517954331edcee64967d0a6a37ea03326468599edabddeb9ea17a53179af616282e5126
+Size (zls-master-0.16.0-dev/master.zip) = 479223 bytes

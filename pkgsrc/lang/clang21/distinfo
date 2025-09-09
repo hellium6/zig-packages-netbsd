@@ -1,0 +1,12 @@
+$NetBSD: distinfo,v 1.87 2024/07/07 14:00:21 wiz Exp $
+
+BLAKE2s (clang-21.1.0.src.tar.xz) = d84827ee5e8046a1e9bc8fd1d1bc0e4d712d7dd99d602047644abb94c66bdd9c
+SHA512 (clang-21.1.0.src.tar.xz) = 448dea6453cc95e9ba5454ae659c57121bd4369b408757043c9a8cdce2576ef8cec35580b6099df4e69882651f0e8afd55a1b2c4dd0688156f0db5dceda7251f
+Size (clang-21.1.0.src.tar.xz) = 27010440 bytes
+BLAKE2s (cmake-21.1.0.src.tar.xz) = 46a93abb176b78df4436b5c8ee83e748621cc55aadce26c7a5691ca8ff8be595
+SHA512 (cmake-21.1.0.src.tar.xz) = a9542349d0bc3bf733958624aeab3f7e817b96996b23ab6a325d81f07a0ec3d9e2d8426b7b169e4073d7c823768db01fdee9b03c8d7b0f6f5e54244c38d9ec01
+Size (cmake-21.1.0.src.tar.xz) = 8928 bytes
+BLAKE2s (runtimes-21.1.0.src.tar.xz) = 9b4d0c9815ad7dd7e9784bb563d08e7e53ba2d99da3c128e5292470f2dfbc52f
+SHA512 (runtimes-21.1.0.src.tar.xz) = 69ce778da52c33b59bd8bf0ef91d5ef64d16d68a087f8aa9122a643db0e490592fe08fc2398aea9447319b01eba2ecb954296bc4d65f3ef87abcb1f8a94e4f34
+Size (runtimes-21.1.0.src.tar.xz) = 8516 bytes
+SHA1 (patch-lib_Driver_ToolChain.cpp) = 33a8e346a72893140fde42245e4b108f3a9b9e3e

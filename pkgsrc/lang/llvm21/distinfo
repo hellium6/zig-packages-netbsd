@@ -1,0 +1,18 @@
+$NetBSD: distinfo,v 1.45 2024/07/06 15:45:05 adam Exp $
+
+BLAKE2s (cmake-21.1.0.src.tar.xz) = 46a93abb176b78df4436b5c8ee83e748621cc55aadce26c7a5691ca8ff8be595
+SHA512 (cmake-21.1.0.src.tar.xz) = a9542349d0bc3bf733958624aeab3f7e817b96996b23ab6a325d81f07a0ec3d9e2d8426b7b169e4073d7c823768db01fdee9b03c8d7b0f6f5e54244c38d9ec01
+Size (cmake-21.1.0.src.tar.xz) = 8928 bytes
+BLAKE2s (llvm-21.1.0.src.tar.xz) = 3e64bdbbe810307b8c53d10aeb73848ee42086804afd2657c6f76aca7c315d55
+SHA512 (llvm-21.1.0.src.tar.xz) = d7ac4cd6722781fc4235289ce7272c206b05bdf93b41acc5b39a5772cbbbbb3027b1437ebdf2bc5b4bfadfec8d628a9dce27599a1b943b68317f458d6f8db5f1
+Size (llvm-21.1.0.src.tar.xz) = 77773052 bytes
+BLAKE2s (runtimes-21.1.0.src.tar.xz) = 9b4d0c9815ad7dd7e9784bb563d08e7e53ba2d99da3c128e5292470f2dfbc52f
+SHA512 (runtimes-21.1.0.src.tar.xz) = 69ce778da52c33b59bd8bf0ef91d5ef64d16d68a087f8aa9122a643db0e490592fe08fc2398aea9447319b01eba2ecb954296bc4d65f3ef87abcb1f8a94e4f34
+Size (runtimes-21.1.0.src.tar.xz) = 8516 bytes
+SHA1 (patch-CMakeLists.txt) = c53cef61bdaeaf5216b78330992357a632a2b0b2
+SHA1 (patch-cmake_config-ix.cmake) = f5cd0c949d35020d1051f95417e7944aa71a3d54
+SHA1 (patch-cmake_modules_AddLLVM.cmake) = 4e6668e0c3e13423ce3e19304f4ad60f66d41562
+SHA1 (patch-include_llvm-c_DataTypes.h) = ff547cae5bdf90c5a1371b9eb196e7537a03b18d
+SHA1 (patch-include_llvm_Analysis_ConstantFolding.h) = 50f64446f14a344ff7007dfaee66ce6687011384
+SHA1 (patch-tools_llvm-shlib_CMakeLists.txt) = a7eb747f96e26605df0260c989cf3c4f3c0f05e0
+SHA1 (patch-utils_llvm-lit_CMakeLists.txt) = 8b18659fe7189c9077b0409e123d41c01e8c8610

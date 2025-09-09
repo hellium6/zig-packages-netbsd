@@ -28,28 +28,40 @@ In case you reached here check the following:
 - If you want to skip building, you might [find releases](https://github.com/hellium6/zig-master-netbsd/releases) with binary packages which you can install in this order - llvm, lld, clang, zig-master - with something like: `doas pkg_add /path/to/some-package.tgz`
 - If you want to build from source, follow the instructions below.
 - Building from source might require some hours or days (depending on your hardware) to finish as some packages have big codebases. Megabytes of sources producing gigabytes of outputs.
-- [There are](https://github.com/NetBSD/pkgsrc/issues/155) WIP LLVM packages (<https://pkgsrc.se/wip/llvm>, <https://pkgsrc.se/wip/lld>, <https://pkgsrc.se/wip/clang>). I haven't tried them but I expect them to be better than mine. But the `zig-master` package in this repo doesn't use them. If you want to use them you might have to make some edits. e.g. Replacing `lang/llvm19` with `wip/llvm`, `devel/lld19` with `wip/lld` etc. And I'm not sure if you'd be able to have anything LLVM 18.x based on the system.
+- [There are](https://github.com/NetBSD/pkgsrc/issues/155) WIP LLVM packages (<https://pkgsrc.se/wip/llvm>, <https://pkgsrc.se/wip/lld>, <https://pkgsrc.se/wip/clang>). I haven't tried them but I expect them to be better than mine. But the Zig packages in this repo doesn't use them. If you want to use them you might have to make some edits. e.g. Replacing `lang/llvm19` with `wip/llvm`, `devel/lld19` with `wip/lld` etc. And I'm not sure if you'd be able to have anything LLVM 18.x based on the system.
 
 ## Usage
 
 - [Populate `/usr/pkgsrc`](https://www.netbsd.org/docs/pkgsrc/getting.html)
 - Optionally `chown -R yournonrootusername:users /usr/pkgsrc` so that editing files is easier
+- Note the LLVM versions required for corresponding Zig versions:
+
+```
+zig-0.16.x: LLVM 21 (early builds might want 20)
+zig-0.15.x: LLVM 20 (early builds might want 19)
+zig-0.14.x: LLVM 19
+zig-0.13.x: LLVM 18
+```
+
 - Then:
 
 ```sh
 cp -r pkgsrc/* /usr/pkgsrc/
 
 ### For zig-master:
-cd /usr/pkgsrc/lang/llvm19
+cd /usr/pkgsrc/lang/llvm21
 make install
 
-cd /usr/pkgsrc/devel/lld19
+cd /usr/pkgsrc/devel/lld21
 make install
 
-cd /usr/pkgsrc/lang/clang19
+cd /usr/pkgsrc/lang/clang21
 make install
 
 cd /usr/pkgsrc/lang/zig-master
+### For 0.15.1 stable:
+### Install lang/llvm20, devel/lld20, lang/clang20 like above, then:
+### cd /usr/pkgsrc/lang/zig-0.15
 ### For 0.14.0 stable:
 ### Install lang/llvm19, devel/lld19, lang/clang19 like above, then:
 ### cd /usr/pkgsrc/lang/zig-0.14.0
@@ -65,7 +77,7 @@ ZIGF=$(curl -s https://ziglang.org/download/ | grep '\-dev' | head -n1 | sed -ne
 ## put the fetched value in previous command as DISTNAME
 sed -i -e "s/^DISTNAME=.*/DISTNAME=	$ZIGF/" Makefile
 ## or enter manually
-#sed -i -e 's/^DISTNAME=.*/DISTNAME=	zig-0.15.0-dev.929+31e46be74/' Makefile
+#sed -i -e 's/^DISTNAME=.*/DISTNAME=	zig-0.16.0-dev.191+9fa2394f8/' Makefile
 ## optionally change MASTER_SITES to use a mirror
 sed -i -e 's/^MASTER_SITES=.*/MASTER_SITES=	https:\/\/zig.linus.dev\/zig\//' Makefile
 make makesum  # update checksums according to new DISTNAME
@@ -99,19 +111,19 @@ doas pkg_add /path/to/package-filename-here.tgz
 Example output after install:
 
 ```sh
-$ llvm-config19 --version
-19.1.7
-$ /usr/pkg/llvm19/bin/ld.lld --version
-LLD 19.1.7 (compatible with GNU linkers)
-$ clang++19 --version
-clang version 19.1.7
-Target: x86_64-unknown-netbsd10.0
+$ llvm-config21 --version
+21.1.0
+$ /usr/pkg/llvm21/bin/ld.lld --version
+LLD 21.1.0 (compatible with GNU linkers)
+$ clang++21 --version
+clang version 21.1.0
+Target: x86_64-unknown-netbsd10.1
 Thread model: posix
-InstalledDir: /usr/pkg/llvm19/bin
+InstalledDir: /usr/pkg/llvm21/bin
 $ zig-master version
-0.15.0-dev.300+9e21ba12d
+0.16.0-dev.205+4c0127566
 $ pkg_info -a | grep ^zig
-zig-master-0.15.0-dev.300+9e21ba12d Programming language designed for robustness and clarity
+zig-master-0.16.0-dev.205+4c0127566 Programming language designed for robustness and clarity (prefix isolated)
 ```
 
 Example of working with both Zig and Zig master on the same system:
@@ -121,9 +133,9 @@ $ echo $SHELL
 /usr/pkg/bin/bash
 $ doas pkgin in zig
 $ zig version
-0.13.0
+0.14.1
 $ zig-master version
-0.15.0-dev.300+9e21ba12d
+0.16.0-dev.205+4c0127566
 ### For lang/zig-0.14.0 you'd have to run zig-0.14.0 or
 ### if you've changed DISTNAME, type "zig" and press tab twice for hint.
 ### Example:
@@ -135,7 +147,7 @@ $ zig-master version
 $ alias zig=zig-master
 ### above can be added in ~/.bashrc to do this automatically on startup
 $ zig version
-0.15.0-dev.300+9e21ba12d
+0.16.0-dev.205+4c0127566
 $ cd `mktemp -d`
 $ zig init
 info: created build.zig
@@ -154,12 +166,14 @@ Example of uninstalling a package:
 
 ```sh
 $ pkg_info -a | grep ^zig
-zig-master-0.15.0-dev.300+9e21ba12d Programming language designed for robustness and clarity
+zig-master-0.16.0-dev.205+4c0127566 Programming language designed for robustness and clarity
+### For lang/zig-0.15 the output might be something like:
+### zig-master-0.15.0-dev.300+9e21ba12d Programming language designed for robustness and clarity (prefix isolated)
 ### For lang/zig-0.14.0 the output might be something like:
 ### zig-isolated0140-0.14.0 Programming language designed for robustness and clarity (prefix isolated)
-### For lang/zig-0.13.0 that might be something like:
-### zig-isolated0130-0.13.0nb1 Programming language designed for robustness and clarity (prefix isolated)
-$ doas pkg_delete zig-master-0.15.0-dev.300+9e21ba12d
+### Output should be similar for older versions
+### To continue with uninstalling
+$ doas pkg_delete zig-master-0.16.0-dev.205+4c0127566
 ```
 
 ### ZLS
@@ -176,7 +190,7 @@ $ cd /usr/pkgsrc/devel/zls-master
 $ make makesum  # update checksum according to latest master archive
 $ make install
 $ zls-master --version
-0.15.0-dev
+0.16.0-dev
 $ which zls-master
 /usr/pkg/bin/zls-master
 ### Use the above path in your text editor config to use this zls

@@ -30,12 +30,13 @@ ZIGSTRIP?=		yes
 TOOL_DEPENDS+=		zig-master-[0-9]*:../../lang/zig-master
 USE_LANGUAGES=		c
 
-## CHANGE THESE if you changed DISTNAME in lang/zig-0.14.0/Makefile.
-ZIG_BINARY=	${PREFIX}/bin/zig-master
-ZIG_PREFIX=	${PREFIX}/zig-master
+## CHANGE PACKAGE_SLUG according to the value in lang/zig-master/Makefile.
+PACKAGE_SLUG=	zig-master
+ZIG_BINARY=	${PREFIX}/bin/${PACKAGE_SLUG}
+ZIG_PREFIX=	${PREFIX}/${PACKAGE_SLUG}
 
-MAKE_ENV+=		ZIG_GLOBAL_CACHE_DIR=${WRKDIR}/zig-master-global-cache
-MAKE_ENV+=		ZIG_LOCAL_CACHE_DIR=${WRKDIR}/zig-master-local-cache
+MAKE_ENV+=	ZIG_GLOBAL_CACHE_DIR=${WRKDIR}/${PACKAGE_SLUG}-global-cache
+MAKE_ENV+=	ZIG_LOCAL_CACHE_DIR=${WRKDIR}/${PACKAGE_SLUG}-local-cache
 
 .if ${ZIGPIE:Uyes:M[yY][eE][sS]}
 ZIGBUILDARGS+=		-Dpie=true
@@ -65,7 +66,7 @@ post-extract: zig-vendor-packages
 .PHONY: zig-vendor-packages
 zig-vendor-packages:
 .for pkg in ${ZIG_PACKAGE_DEPENDS}
-	${RUN} ${PREFIX}/bin/zig-master fetch --global-cache-dir ${WRKDIR}/zig-master-global-cache ${pkg}
+	${RUN} ${ZIG_BINARY} fetch --global-cache-dir ${WRKDIR}/zig-master-global-cache ${pkg}
 .endfor
 
 

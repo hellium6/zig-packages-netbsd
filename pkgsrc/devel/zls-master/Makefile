@@ -6,9 +6,13 @@ CATEGORIES=	devel
 MASTER_SITES=	https://github.com/zigtools/zls/archive/refs/heads/
 EXTRACT_SUFX=	.zip
 
-## "0.15.0-dev" part is taken from ".version" line on build.zig.zon
+## "0.16.0-dev" part is taken from ".version" line on build.zig.zon
 ## Please update if necessary.
-PKGNAME=	zls-master-0.15.0-dev
+PKGNAME=	zls-master-0.16.0-dev
+
+## Store distfile in a directory so even if the name is same it is
+## downloaded again for another version
+DIST_SUBDIR=	${PKGNAME}
 
 ## zls master archive extracts in a different dir
 WRKSRC=		${WRKDIR}/zls-master
