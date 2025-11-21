@@ -59,7 +59,7 @@ cd /usr/pkgsrc/lang/clang21
 make install
 
 cd /usr/pkgsrc/lang/zig-master
-### For 0.15.1 stable:
+### For 0.15.2 stable:
 ### Install lang/llvm20, devel/lld20, lang/clang20 like above, then:
 ### cd /usr/pkgsrc/lang/zig-0.15
 ### For 0.14.0 stable:
