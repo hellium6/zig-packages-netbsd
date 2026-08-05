@@ -37,6 +37,7 @@ In case you reached here check the following:
 - Note the LLVM versions required for corresponding Zig versions:
 
 ```
+zig-0.17.x: LLVM 22 (early builds might want 21)
 zig-0.16.x: LLVM 21 (early builds might want 20)
 zig-0.15.x: LLVM 20 (early builds might want 19)
 zig-0.14.x: LLVM 19
@@ -48,14 +49,14 @@ zig-0.13.x: LLVM 18
 ```sh
 cp -r pkgsrc/* /usr/pkgsrc/
 
-### For zig-master:
-cd /usr/pkgsrc/lang/llvm21
+### For zig-master (0.17.x):
+cd /usr/pkgsrc/lang/llvm22
 make install
 
-cd /usr/pkgsrc/devel/lld21
+cd /usr/pkgsrc/devel/lld22
 make install
 
-cd /usr/pkgsrc/lang/clang21
+cd /usr/pkgsrc/lang/clang22
 make install
 
 cd /usr/pkgsrc/lang/zig-master
