@@ -6,7 +6,7 @@
 ## https://ziglang.org/builds/zig-0.17.0-dev.1509+bb296ab9b.tar.xz
 ## then this value would be: zig-0.17.0-dev.1509+bb296ab9b
 ## Meaning, filename minus the .tar.xz extension
-DISTNAME=	zig-0.17.0-dev.1564+97ced1272
+DISTNAME=	zig-0.17.0-dev.1609+11e2bb391
 ## To make this a separate package than lang/zig
 PKGNAME=	${DISTNAME:S/zig-/zig-master-/}
 CATEGORIES=	lang
@@ -131,6 +131,20 @@ post-configure:
 	## /usr/pkg/bin/${PACKAGE_SLUG} file doesn't say "unable to find zig
 	## installation directory"
 	${SED} -i'_orig' -e 's,= self_exe_path;,= "/usr/pkg/${PACKAGE_SLUG}/bin";\n    _ = self_exe_path;,' ${WRKDIR}/${DISTNAME}/lib/std/zig.zig
+	## - Make stage3 build verbose
+	## - Get rid of long tests (and langref as a result)
+	##   TODO: Find alternative of disabling tests keeping langref
+	${SED} -i'_orig' \
+		-e 's,--prefix,--verbose -Dno-langref &,' \
+		${WRKDIR}/${DISTNAME}/cmake-pkgsrc-build/CMakeFiles/stage3.dir/build.make
+	## Fix "configuration failed: UriMissingHost" error.
+	## bsd.pkg.mk disables downloading by setting non-working proxies.
+	## Build fails with this in place. So remove env var checks for pkgsrc.
+	${SED} -i'_orig' -e '/ALL_PROXY/ s,.*,\/\/&,' ${WRKDIR}/${DISTNAME}/lib/std/http/Client.zig
+
+pre-install:
+	## Revert "UriMissingHost" error fix for general use
+	${SED} -i'_orig' -e '/ALL_PROXY/ s,^\/\/,,' ${WRKDIR}/${DISTNAME}/lib/std/http/Client.zig
 
 post-install:
 	## Binary link for isolated install
