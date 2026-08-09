@@ -182,6 +182,8 @@ $ doas pkg_delete zig-master-0.16.0-dev.205+4c0127566
 
 ### ZLS
 
+NOTE: ZLS 0.17.0-dev is [not known to be usable](https://github.com/hellium6/zig-packages-netbsd/issues/30) with latest Zig master due to pending changes for build system. Use ZLS 0.16.0 with Zig 0.16.0 if you really want to use it.
+
 If you want to use [Zig Language Server (ZLS)](https://github.com/zigtools/zls/) for [text editor autocomplete and other features](https://langserver.org/), you'd preferably need the zls version matching your installed Zig version.
 
 Multiple versions of zls can live in the same NetBSD system. e.g. You can keep `devel/zls` from official pkgsrc, `devel/zls-master` and `devel/zls-0.14.0` together. Just make sure to use the appropriate binary path in the configuration of the text editor.
