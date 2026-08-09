@@ -3,10 +3,10 @@
 ## Update DISTNAME according to the latest master download URL and run
 ## "make makesum" after that.
 ## Example: If the URL is:
-## https://ziglang.org/builds/zig-0.16.0-dev.191+9fa2394f8.tar.xz
-## then this value would be: zig-0.16.0-dev.191+9fa2394f8
+## https://ziglang.org/builds/zig-0.17.0-dev.1509+bb296ab9b.tar.xz
+## then this value would be: zig-0.17.0-dev.1509+bb296ab9b
 ## Meaning, filename minus the .tar.xz extension
-DISTNAME=	zig-0.16.0-dev.205+4c0127566
+DISTNAME=	zig-0.17.0-dev.1609+11e2bb391
 ## To make this a separate package than lang/zig
 PKGNAME=	${DISTNAME:S/zig-/zig-master-/}
 CATEGORIES=	lang
@@ -23,7 +23,7 @@ EXTRACT_SUFX=	.tar.xz
 ## Optionally build number can be removed to make it shorter.
 PACKAGE_SLUG=	zig-master
 
-REQUIRED_LLVM_MAJOR_VERSION=	21
+REQUIRED_LLVM_MAJOR_VERSION=	22
 # .info "(i) Using LLVM ${REQUIRED_LLVM_MAJOR_VERSION}"
 
 
@@ -76,7 +76,27 @@ RELRO_SUPPORTED=	no
 MKPIE_SUPPORTED=	no
 # TODO: /usr/bin/env + /bin/env in lib/std/zig/system.zig
 
+## For detecting low RAM
+MEMORY_BYTES!=(/sbin/sysctl -n hw.physmem64) 2>/dev/null
+.if empty(MEMORY_BYTES)
+MEMORY_BYTES!=(/sbin/sysctl -n hw.physmem) 2>/dev/null
+.endif
+# .info "(i) Memory in bytes: ${MEMORY_BYTES}"
+.if ${MEMORY_BYTES} < 8000000000
+LOWER_ZIG_MEMORY=yes
+.endif
+
+
 pre-configure:
+	## Low RAM, so change build.zig RAM requirements to continue build
+.	ifdef LOWER_ZIG_MEMORY
+	${ECHO} "(i) Memory is lower than 8G, lowering max_rss in build.zig"
+	${SED} -i'_orig' \
+		-e 's,8_000_000_000,4_000_000_000,' \
+		-e 's,9_300_000_000,4_000_000_000,' \
+		${WRKDIR}/${DISTNAME}/build.zig
+.	endif
+
 	## - Make zig build see LD_LIBRARY_PATH (e.g. path to
 	## "libclang-cpp.so.xx.y")
 	## - Set version string (esp. for dev builds)
@@ -110,7 +130,21 @@ post-configure:
 	## Hardcode the path so that executing the linked
 	## /usr/pkg/bin/${PACKAGE_SLUG} file doesn't say "unable to find zig
 	## installation directory"
-	${SED} -i'_orig' -e 's,= self_exe_path;,= "/usr/pkg/${PACKAGE_SLUG}/bin";\n    _ = self_exe_path;,' ${WRKDIR}/${DISTNAME}/src/introspect.zig
+	${SED} -i'_orig' -e 's,= self_exe_path;,= "/usr/pkg/${PACKAGE_SLUG}/bin";\n    _ = self_exe_path;,' ${WRKDIR}/${DISTNAME}/lib/std/zig.zig
+	## - Make stage3 build verbose
+	## - Get rid of long tests (and langref as a result)
+	##   TODO: Find alternative of disabling tests keeping langref
+	${SED} -i'_orig' \
+		-e 's,--prefix,--verbose -Dno-langref &,' \
+		${WRKDIR}/${DISTNAME}/cmake-pkgsrc-build/CMakeFiles/stage3.dir/build.make
+	## Fix "configuration failed: UriMissingHost" error.
+	## bsd.pkg.mk disables downloading by setting non-working proxies.
+	## Build fails with this in place. So remove env var checks for pkgsrc.
+	${SED} -i'_orig' -e '/ALL_PROXY/ s,.*,\/\/&,' ${WRKDIR}/${DISTNAME}/lib/std/http/Client.zig
+
+pre-install:
+	## Revert "UriMissingHost" error fix for general use
+	${SED} -i'_orig' -e '/ALL_PROXY/ s,^\/\/,,' ${WRKDIR}/${DISTNAME}/lib/std/http/Client.zig
 
 post-install:
 	## Binary link for isolated install
