@@ -6,7 +6,7 @@
 ## https://ziglang.org/builds/zig-0.17.0-dev.1509+bb296ab9b.tar.xz
 ## then this value would be: zig-0.17.0-dev.1509+bb296ab9b
 ## Meaning, filename minus the .tar.xz extension
-DISTNAME=	zig-0.17.0
+DISTNAME=	zig-0.17.1
 ## Want to make this (a) a separate package than lang/zig and (b) we
 ## want to be able to install different commits of the same version.
 ## For example 0.17.0 (stable) and zig-0.17.0-dev.1509+bb296ab9b (unstable).

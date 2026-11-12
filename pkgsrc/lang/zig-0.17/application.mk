@@ -31,7 +31,7 @@ TOOL_DEPENDS+=		zig-isolated[0-9]*:../../lang/zig-0.17
 USE_LANGUAGES=		c
 
 ## CHANGE PACKAGE_SLUG according to the value in lang/zig-0.17/Makefile.
-PACKAGE_SLUG=	zig-0.17.0
+PACKAGE_SLUG=	zig-0.17.1
 ZIG_BINARY=	${PREFIX}/bin/${PACKAGE_SLUG}
 ZIG_PREFIX=	${PREFIX}/${PACKAGE_SLUG}
 
