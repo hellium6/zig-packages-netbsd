@@ -60,6 +60,9 @@ cd /usr/pkgsrc/lang/clang22
 make install
 
 cd /usr/pkgsrc/lang/zig-master
+### For 0.17.0 stable:
+### Install lang/llvm22, devel/lld22, lang/clang22 like above, then:
+### cd /usr/pkgsrc/lang/zig-0.17
 ### For 0.16.0 stable:
 ### Install lang/llvm21, devel/lld21, lang/clang21 like above, then:
 ### cd /usr/pkgsrc/lang/zig-0.16
@@ -115,19 +118,19 @@ doas pkg_add /path/to/package-filename-here.tgz
 Example output after install:
 
 ```sh
-$ llvm-config21 --version
-21.1.0
-$ /usr/pkg/llvm21/bin/ld.lld --version
-LLD 21.1.0 (compatible with GNU linkers)
-$ clang++21 --version
-clang version 21.1.0
+$ llvm-config22 --version
+22.1.8
+$ /usr/pkg/llvm22/bin/ld.lld --version
+LLD 22.1.8 (compatible with GNU linkers)
+$ clang++22 --version
+clang version 22.1.8
 Target: x86_64-unknown-netbsd10.1
 Thread model: posix
-InstalledDir: /usr/pkg/llvm21/bin
+InstalledDir: /usr/pkg/llvm22/bin
 $ zig-master version
-0.16.0-dev.205+4c0127566
+0.17.0-dev.1609+11e2bb391
 $ pkg_info -a | grep ^zig
-zig-master-0.16.0-dev.205+4c0127566 Programming language designed for robustness and clarity (prefix isolated)
+zig-master-0.17.0-dev.1609+11e2bb391 Programming language designed for robustness and clarity (prefix isolated)
 ```
 
 Example of working with both Zig and Zig master on the same system:
@@ -137,9 +140,9 @@ $ echo $SHELL
 /usr/pkg/bin/bash
 $ doas pkgin in zig
 $ zig version
-0.14.1
+0.16.0
 $ zig-master version
-0.16.0-dev.205+4c0127566
+0.17.0-dev.1609+11e2bb391
 ### For lang/zig-0.14.0 you'd have to run zig-0.14.0 or
 ### if you've changed DISTNAME, type "zig" and press tab twice for hint.
 ### Example:
@@ -151,7 +154,7 @@ $ zig-master version
 $ alias zig=zig-master
 ### above can be added in ~/.bashrc to do this automatically on startup
 $ zig version
-0.16.0-dev.205+4c0127566
+0.17.0-dev.1609+11e2bb391
 $ cd `mktemp -d`
 $ zig init
 info: created build.zig
@@ -163,7 +166,7 @@ $ zig build
 ### easy to undo...
 $ unalias zig
 $ zig version
-0.13.0
+0.16.0
 ```
 
 Example of uninstalling a package:
