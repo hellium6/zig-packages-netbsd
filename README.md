@@ -60,7 +60,7 @@ cd /usr/pkgsrc/lang/clang22
 make install
 
 cd /usr/pkgsrc/lang/zig-master
-### For 0.17.0 stable:
+### For 0.17.x stable:
 ### Install lang/llvm22, devel/lld22, lang/clang22 like above, then:
 ### cd /usr/pkgsrc/lang/zig-0.17
 ### For 0.16.0 stable:
@@ -84,7 +84,7 @@ ZIGF=$(curl -s https://ziglang.org/download/ | grep '\-dev' | head -n1 | sed -ne
 ## put the fetched value in previous command as DISTNAME
 sed -i -e "s/^DISTNAME=.*/DISTNAME=	$ZIGF/" Makefile
 ## or enter manually
-#sed -i -e 's/^DISTNAME=.*/DISTNAME=	zig-0.16.0-dev.191+9fa2394f8/' Makefile
+#sed -i -e 's/^DISTNAME=.*/DISTNAME=	zig-0.17.0-dev.1509+bb296ab9b/' Makefile
 ## optionally change MASTER_SITES to use a mirror
 sed -i -e 's/^MASTER_SITES=.*/MASTER_SITES=	https:\/\/zig.linus.dev\/zig\//' Makefile
 make makesum  # update checksums according to new DISTNAME
@@ -143,12 +143,11 @@ $ zig version
 0.16.0
 $ zig-master version
 0.17.0-dev.1609+11e2bb391
-### For lang/zig-0.14.0 you'd have to run zig-0.14.0 or
+### For stable ones, like lang/zig-0.17 you'd have to run zig-0.17.1 or
 ### if you've changed DISTNAME, type "zig" and press tab twice for hint.
 ### Example:
-### $ zig-0.14.0-dev.3462 version
-### 0.14.0-dev.3462+edabcf619
-### This is similar to lang/zig-0.13.0
+### $ zig-0.17.0-dev.1509 version
+### 0.17.0-dev.1509+bb296ab9b
 
 ### typing zig-master every time is boring, so...
 $ alias zig=zig-master
