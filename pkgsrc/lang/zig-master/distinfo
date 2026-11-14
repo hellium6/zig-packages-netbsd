@@ -1,5 +1,5 @@
 $NetBSD$
 
-BLAKE2s (zig-0.17.0-dev.1609+11e2bb391.tar.xz) = f60585ae2110c83dfd8a25abfdfe4ec8cc82131c6a7576ee4ab3c6ae50f431fa
-SHA512 (zig-0.17.0-dev.1609+11e2bb391.tar.xz) = 1d2ebdac01a4ba2c1187cc2548e6509c1465bf8066a163c7d66ace50978008ef89feaa9ceee36afa130be888f4ca73ba32b0043fbae239aa2fcb655001d984e7
-Size (zig-0.17.0-dev.1609+11e2bb391.tar.xz) = 22883376 bytes
+BLAKE2s (zig-isolated/zig-0.18.0-dev.1005+75d48dfff.tar.xz) = 699aa0baac8318c8853ea2fb47e5c8dcd92646d994e085a336893558b58694d5
+SHA512 (zig-isolated/zig-0.18.0-dev.1005+75d48dfff.tar.xz) = 58b68327464dca5ba253b477d3313817f3779d2e95c62966497d70ac9cb5eaa354e6680bf840828bb9d7fe1977c1480437598d712f97c99e902dbaeba87f0cbc
+Size (zig-isolated/zig-0.18.0-dev.1005+75d48dfff.tar.xz) = 23244312 bytes

@@ -37,29 +37,33 @@ In case you reached here check the following:
 - Note the LLVM versions required for corresponding Zig versions:
 
 ```
-zig-0.17.x: LLVM 22 (early builds might want 21)
-zig-0.16.x: LLVM 21 (early builds might want 20)
-zig-0.15.x: LLVM 20 (early builds might want 19)
+zig-0.18.x: LLVM 23
+zig-0.17.x: LLVM 22
+zig-0.16.x: LLVM 21
+zig-0.15.x: LLVM 20
 zig-0.14.x: LLVM 19
 zig-0.13.x: LLVM 18
 ```
+
+\* Early builds in a `-dev` branch might want one version less than the version in this table
 
 - Then:
 
 ```sh
 cp -r pkgsrc/* /usr/pkgsrc/
 
-### For zig-master (0.17.x):
-cd /usr/pkgsrc/lang/llvm22
+### For zig-master (0.18.x):
+cd /usr/pkgsrc/lang/llvm23
 make install
 
-cd /usr/pkgsrc/devel/lld22
+cd /usr/pkgsrc/devel/lld23
 make install
 
-cd /usr/pkgsrc/lang/clang22
+cd /usr/pkgsrc/lang/clang23
 make install
 
 cd /usr/pkgsrc/lang/zig-master
+
 ### For 0.17.x stable:
 ### Install lang/llvm22, devel/lld22, lang/clang22 like above, then:
 ### cd /usr/pkgsrc/lang/zig-0.17
@@ -69,22 +73,18 @@ cd /usr/pkgsrc/lang/zig-master
 ### For 0.15.2 stable:
 ### Install lang/llvm20, devel/lld20, lang/clang20 like above, then:
 ### cd /usr/pkgsrc/lang/zig-0.15
-### For 0.14.0 stable:
-### Install lang/llvm19, devel/lld19, lang/clang19 like above, then:
-### cd /usr/pkgsrc/lang/zig-0.14.0
-### For 0.13.0 stable:
-### Install lang/llvm18, devel/lld18, lang/clang18
-### Then:
-### cd /usr/pkgsrc/lang/zig-0.13.0
+### And so on...
+### If you are unsure which version LLVM it requires, refer to the list above
+### or check REQUIRED_LLVM_MAJOR_VERSION in Makefile.
 
-## update DISTNAME in Makefile according to download URL
-## read comment in the file for details
-## to get latest master or dev download:
+## Optionally, to update DISTNAME in Makefile according to download URL
+## from download page, read comment in the Makefile for details.
+## To get latest master or dev download:
 ZIGF=$(curl -s https://ziglang.org/download/ | grep '\-dev' | head -n1 | sed -ne 's|.*>\(zig.*\)\.tar\.xz<\/a.*|\1|p')
 ## put the fetched value in previous command as DISTNAME
 sed -i -e "s/^DISTNAME=.*/DISTNAME=	$ZIGF/" Makefile
 ## or enter manually
-#sed -i -e 's/^DISTNAME=.*/DISTNAME=	zig-0.17.0-dev.1509+bb296ab9b/' Makefile
+#sed -i -e 's/^DISTNAME=.*/DISTNAME=	zig-0.18.0-dev.1005+75d48dfff/' Makefile
 ## optionally change MASTER_SITES to use a mirror
 sed -i -e 's/^MASTER_SITES=.*/MASTER_SITES=	https:\/\/zig.linus.dev\/zig\//' Makefile
 make makesum  # update checksums according to new DISTNAME
@@ -132,19 +132,19 @@ doas pkg_add /path/to/package-filename-here.tgz
 Example output after install:
 
 ```sh
-$ llvm-config22 --version
-22.1.8
-$ /usr/pkg/llvm22/bin/ld.lld --version
-LLD 22.1.8 (compatible with GNU linkers)
-$ clang++22 --version
-clang version 22.1.8
+$ llvm-config23 --version
+23.1.5
+$ /usr/pkg/llvm23/bin/ld.lld --version
+LLD 23.1.5 (compatible with GNU linkers)
+$ clang++23 --version
+clang version 23.1.5
 Target: x86_64-unknown-netbsd10.1
 Thread model: posix
-InstalledDir: /usr/pkg/llvm22/bin
+InstalledDir: /usr/pkg/llvm23/bin
 $ zig-master version
-0.17.0-dev.1609+11e2bb391
+0.18.0-dev.1005+75d48dfff
 $ pkg_info -a | grep ^zig
-zig-master-0.17.0-dev.1609+11e2bb391 Programming language designed for robustness and clarity (prefix isolated)
+zig-master-0.18.0-dev.1005+75d48dfff Programming language designed for robustness and clarity (prefix isolated)
 ```
 
 Example of working with both Zig and Zig master on the same system:
@@ -156,7 +156,7 @@ $ doas pkgin in zig
 $ zig version
 0.16.0
 $ zig-master version
-0.17.0-dev.1609+11e2bb391
+0.18.0-dev.1005+75d48dfff
 ### For stable ones, like lang/zig-0.17 you'd have to run zig-0.17.1 or
 ### if you've changed DISTNAME, type "zig" and press tab twice for hint.
 ### Example:
@@ -167,7 +167,7 @@ $ zig-master version
 $ alias zig=zig-master
 ### above can be added in ~/.bashrc to do this automatically on startup
 $ zig version
-0.17.0-dev.1609+11e2bb391
+0.18.0-dev.1005+75d48dfff
 $ cd `mktemp -d`
 $ zig init
 info: created build.zig

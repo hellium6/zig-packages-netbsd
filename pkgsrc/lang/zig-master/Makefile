@@ -3,10 +3,10 @@
 ## Update DISTNAME according to the latest master download URL and run
 ## "make makesum" after that.
 ## Example: If the URL is:
-## https://ziglang.org/builds/zig-0.17.0-dev.1509+bb296ab9b.tar.xz
-## then this value would be: zig-0.17.0-dev.1509+bb296ab9b
+## https://ziglang.org/builds/zig-0.18.0-dev.1005+75d48dfff.tar.xz
+## then this value would be: zig-0.18.0-dev.1005+75d48dfff
 ## Meaning, filename minus the .tar.xz extension
-DISTNAME=	zig-0.17.0-dev.1609+11e2bb391
+DISTNAME=	zig-0.18.0-dev.1005+75d48dfff
 ## To make this a separate package than lang/zig
 PKGNAME=	${DISTNAME:S/zig-/zig-master-/}
 CATEGORIES=	lang
@@ -14,6 +14,7 @@ CATEGORIES=	lang
 # MASTER_SITES=	https://ziglang.org/builds/
 ## Alternate mirror
 MASTER_SITES=	https://zig.linus.dev/zig/
+DIST_SUBDIR=	zig-isolated
 EXTRACT_SUFX=	.tar.xz
 ## Used mainly for /usr/pkg/xx directory and binary symlink name.
 ## e.g. If this is "zig-0.16.0" (a) zig will be installed in
@@ -23,7 +24,7 @@ EXTRACT_SUFX=	.tar.xz
 ## Optionally build number can be removed to make it shorter.
 PACKAGE_SLUG=	zig-master
 
-REQUIRED_LLVM_MAJOR_VERSION=	22
+REQUIRED_LLVM_MAJOR_VERSION=	23
 # .info "(i) Using LLVM ${REQUIRED_LLVM_MAJOR_VERSION}"
 
 
@@ -100,6 +101,7 @@ pre-configure:
 	## - Make zig build see LD_LIBRARY_PATH (e.g. path to
 	## "libclang-cpp.so.xx.y")
 	## - Set version string (esp. for dev builds)
+	## - Optimization flag -Oz error fix (for pre 12 version of GCC)
 	## - Make stage3 zig build process (build.zig) see the path
 	## - Append or set CMake values (previously CMakeCache.txt
 	##   "workaround"; starting from "CMAKE_INSTALL_PREFIX" line)
@@ -108,6 +110,7 @@ pre-configure:
 		-e '1{h;s,.*,set(ENV{LIBRARY_PATH} "'${LLVM_ISOLATED_PREFIX}'/lib:/usr/pkg/lib:/usr/lib:$$\ENV{LIBRARY_PATH}")\n,;G;}' \
 		-e '1{h;s,.*,set(ENV{LDFLAGS} "-Wl\,-R'${LLVM_ISOLATED_PREFIX}'/lib -L'${LLVM_ISOLATED_PREFIX}'/lib $$\ENV{LDFLAGS}")\n,;G;}' \
 		-e '/set(ZIG_VERSION/ s,set(ZIG_VERSION "",set(ZIG_VERSION "${DISTNAME:S/zig-//}",' \
+		-e '/Oz/ s,\-Oz,\-Os,' \
 		-e '/$${CMAKE_PREFIX_PATH}/ s,^,list(APPEND ZIG_CMAKE_PREFIX_PATH "${LLVM_ISOLATED_PREFIX}")\n,' \
 		-e '1{h;s,.*,set(CMAKE_INSTALL_PREFIX "${PREFIX}/${PACKAGE_SLUG}" CACHE PATH "Directory to install zig to" FORCE)\n,;G;}' \
 		-e '$$s,$$,\nstring(APPEND CMAKE_CXX_FLAGS " -I${LLVM_ISOLATED_PREFIX}/include"),' \

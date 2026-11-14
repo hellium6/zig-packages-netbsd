@@ -66,7 +66,10 @@ post-extract: zig-vendor-packages
 .PHONY: zig-vendor-packages
 zig-vendor-packages:
 .for pkg in ${ZIG_PACKAGE_DEPENDS}
-	${RUN} ${ZIG_BINARY} fetch --global-cache-dir ${WRKDIR}/zig-master-global-cache ${pkg}
+	## --global-cache-dir does not work anymore, so global and local cache
+	## directory paths are passed by ${MAKE_ENV}
+	# ${RUN} ${ZIG_BINARY} fetch --global-cache-dir ${WRKDIR}/zig-master-global-cache ${pkg}
+	${SETENV} ${MAKE_ENV} ${ZIG_BINARY} fetch ${pkg}
 .endfor
 
 
