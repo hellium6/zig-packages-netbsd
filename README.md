@@ -91,7 +91,19 @@ make makesum  # update checksums according to new DISTNAME
 make install
 ```
 
-If it complains about some files not existing or not listed in PLIST etc. this usually takes care of it:
+If `make install` complains about some files not existing or not listed in PLIST etc., with something like this (`ERROR:` at the beginning of the line with file path following):
+
+```sh
+...
+ERROR:         /usr/pkgsrc/lang/zig-master/work/.destdir/usr/pkg/zig-master/lib/zig/std/posix/wasi.zig
+ERROR:         /usr/pkgsrc/lang/zig-master/work/.destdir/usr/pkg/zig-master/lib/zig/std/zig/system/freebsd.zig
+ERROR:         /usr/pkgsrc/lang/zig-master/work/.destdir/usr/pkg/zig-master/lib/zig/std/zig/system/netbsd.zig
+ERROR:         /usr/pkgsrc/lang/zig-master/work/.destdir/usr/pkg/zig-master/lib/zig/std/zig/system/openbsd.zig
+*** Error code 1
+...
+```
+
+then commands below usually takes care of it:
 
 ```sh
 make print-PLIST > PLIST
@@ -100,6 +112,8 @@ make install
 ```
 
 If you already have the package installed, you might have to do `make update` or `make replace` instead of `make install` in above commands. [Check here](https://www.netbsd.org/docs/pkgsrc/build.html#build.helpful-targets) for more info on which one to use when.
+
+If it still complains with errors, then use `pkg_info` and `pkg-delete` (example shown later in this document) to remove previously installed package, then try `make install` again.
 
 Alternatively to generate package files but not install it, run this instead of `make install`:
 
