@@ -1,0 +1,12 @@
+$NetBSD$
+
+BLAKE2s (llvm-project-23.1.5.src.tar.xz) = 938bcfd2e3a64ef0765363d0f7e792d8d543d5282cca2fcd37fa2386bdd31822
+SHA512 (llvm-project-23.1.5.src.tar.xz) = fae39af451683ad864299f497167616e63d3a1bb5719f0d5123119e7398972cb602aef8cc271b8433910064afa88e1e7b8eede3fdd1ff58664c3189cf4ab5880
+Size (llvm-project-23.1.5.src.tar.xz) = 179220264 bytes
+SHA1 (patch-CMakeLists.txt) = e7ed5046d2f6f2f6338bc842e83666ed109bd2b0
+SHA1 (patch-cmake_config-ix.cmake) = f3167fbdd0ca3fea9f9e5516760b072af62d121a
+SHA1 (patch-cmake_modules_AddLLVM.cmake) = 036eec53f8a2c5921235341db1bf2f504dca8fea
+SHA1 (patch-include_llvm-c_DataTypes.h) = ff547cae5bdf90c5a1371b9eb196e7537a03b18d
+SHA1 (patch-lib_Support_SipHash.cpp) = 2d14242765d7382d95c268c2ce5e26277c7d697e
+SHA1 (patch-tools_llvm-shlib_CMakeLists.txt) = 92558f2d7d87b7a26f7f3a2b3b3dc539ae13e672
+SHA1 (patch-utils_llvm-lit_CMakeLists.txt) = e6f223e68b8ef03175282af1afbfcd7e0b30c6ca
